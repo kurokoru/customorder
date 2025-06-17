@@ -84,6 +84,36 @@ export function fakeTransactionComplete() {
     isComplete: false,
   };
 }
+export function fakeCustomTransaction() {
+  return {
+    totalAmount: undefined,
+  };
+}
+export function fakeCustomTransactionComplete() {
+  return {
+    id: faker.string.uuid(),
+    totalAmount: undefined,
+    createdAt: new Date(),
+    isComplete: false,
+  };
+}
+export function fakeCustomOrderItem() {
+  return {
+    itemName: faker.lorem.words(5),
+    price: faker.number.float(),
+    quantity: faker.number.int(),
+  };
+}
+export function fakeCustomOrderItemComplete() {
+  return {
+    id: faker.string.uuid(),
+    itemName: faker.lorem.words(5),
+    price: faker.number.float(),
+    quantity: faker.number.int(),
+    createdAt: new Date(),
+    customTransactionId: faker.string.uuid(),
+  };
+}
 export function fakeShopData() {
   return {
     tax: undefined,

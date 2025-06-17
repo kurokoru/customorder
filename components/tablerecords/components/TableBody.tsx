@@ -61,7 +61,7 @@ const TableBodyRecords: React.FC<TableBodyRecordsProps> = ({ data }) => {
                 {item.totalQuantity}
               </TableCell>
               <TableCell className="pl-5">
-                $ {item.totalAmount ? item.totalAmount.toString() : 'N/A'}
+                Rp. {item.totalAmount ? item.totalAmount.toString() : 'N/A'}
               </TableCell>
               <TableCell className="hidden md:table-cell pl-3">
                 {item.createdAt.toLocaleDateString()}

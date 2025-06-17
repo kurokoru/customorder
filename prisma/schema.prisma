@@ -86,6 +86,26 @@ model Transaction {
   products    OnSaleProduct[]
 }
 
+model CustomTransaction {
+  id          String             @id @default(cuid())
+  totalAmount Decimal?
+  createdAt   DateTime           @default(now())
+  isComplete  Boolean            @default(false)
+  items       CustomOrderItem[]
+}
+
+model CustomOrderItem {
+  id                  String            @id @default(cuid())
+  itemName           String
+  price              Float
+  quantity           Int
+  createdAt          DateTime          @default(now())
+  customTransactionId String
+  customTransaction   CustomTransaction @relation(fields: [customTransactionId], references: [id], onDelete: Cascade)
+
+  @@index([customTransactionId])
+}
+
 model ShopData {
   id          String          @id @default(cuid())
   tax Int?

@@ -60,14 +60,14 @@ const TableBodyProduct: React.FC<TableBodyProductProps> = ({ data }) => {
                 </Badge>
               </TableCell>
               {/* Render product sell price */}
-              <TableCell className="pl-5">$ {item.sellprice}</TableCell>
+              <TableCell className="pl-5">Rp. {item.sellprice}</TableCell>
               {/* Render product stock */}
               <TableCell className="hidden md:table-cell pl-6">
                 {item.productstock.stock}
               </TableCell>
               {/* Render product price */}
               <TableCell className="hidden md:table-cell pl-4">
-                $ {item.productstock.price}
+                Rp. {item.productstock.price}
               </TableCell>
               {/* Render dropdown for product actions */}
               <TableCell>

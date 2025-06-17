@@ -5,6 +5,7 @@ import {
   Archive,
   Settings,
   Star,
+  ShoppingBasket,
 } from 'lucide-react';
 import { NavItem } from '@/types/Navbar';
 
@@ -18,6 +19,15 @@ export const NAVBAR_ITEMS: NavItem[] = [
     title: 'Orders',
     path: '/orders',
     icon: <ShoppingCart className="h-4 w-4" />,
+  },  {
+    title: 'Custom Orders',
+    path: '/orders/custom',
+    icon: <ShoppingBasket className="h-4 w-4" />,
+  },
+  {
+    title: 'Custom Records',
+    path: '/custom-orders/records',
+    icon: <Archive className="h-4 w-4" />,
   },
   {
     title: 'Product',

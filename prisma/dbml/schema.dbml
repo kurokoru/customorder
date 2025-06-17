@@ -49,6 +49,24 @@ Table Transaction {
   products OnSaleProduct [not null]
 }
 
+Table CustomTransaction {
+  id String [pk]
+  totalAmount Decimal
+  createdAt DateTime [default: `now()`, not null]
+  isComplete Boolean [not null, default: false]
+  items CustomOrderItem [not null]
+}
+
+Table CustomOrderItem {
+  id String [pk]
+  itemName String [not null]
+  price Float [not null]
+  quantity Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  customTransactionId String [not null]
+  customTransaction CustomTransaction [not null]
+}
+
 Table ShopData {
   id String [pk]
   tax Int
@@ -73,3 +91,5 @@ Ref: Product.productId > ProductStock.id [delete: Cascade]
 Ref: OnSaleProduct.productId > Product.productId [delete: Cascade]
 
 Ref: OnSaleProduct.transactionId > Transaction.id [delete: Cascade]
+
+Ref: CustomOrderItem.customTransactionId > CustomTransaction.id [delete: Cascade]

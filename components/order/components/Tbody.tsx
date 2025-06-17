@@ -38,7 +38,7 @@ function TableBodyOrders({ data }: TableBodyProps) {
               </TableCell>
               {/* Render the product sell price */}
               <TableCell className="hidden md:table-cell">
-                $ {item.product.sellprice}
+                Rp. {item.product.sellprice}
               </TableCell>
               {/* Render the quantity */}
               <TableCell className="hidden sm:table-cell">
@@ -46,7 +46,7 @@ function TableBodyOrders({ data }: TableBodyProps) {
               </TableCell>
               {/* Render the total price */}
               <TableCell className="hidden sm:table-cell">
-                $ {totalPrice}
+                Rp. {totalPrice}
               </TableCell>
               {/* Render edit and delete buttons */}
               <TableCell className="text-right">
