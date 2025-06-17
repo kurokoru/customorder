@@ -39,7 +39,7 @@ export function CustomOrderDeleteDialog({ data }: CustomOrderDeleteDialogProps) 
       }
 
       // Send delete request using axios
-      await axios.delete(`/api/custom-orders/${data.id}`);
+      await axios.delete("/api/custom-orders/${data.id}");
       
       // Emit event to refresh the custom order data
       eventBus.emit('fetchCustomOrderData');
@@ -67,7 +67,7 @@ export function CustomOrderDeleteDialog({ data }: CustomOrderDeleteDialogProps) 
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the custom item "{data.itemName}" from your order.
+            This action cannot be undone. This will permanently delete the custom item `{data.itemName}` from your order.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
