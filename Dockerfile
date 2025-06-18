@@ -20,7 +20,7 @@ COPY .env .env
 RUN npx prisma generate
 
 # Build Next.js
-RUN npm run build
+RUN npm run vercel-build
 
 # Set environment variables 
 ENV NODE_ENV=production
