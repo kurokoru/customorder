@@ -6,6 +6,8 @@ function TableHeadCustomRecords() {
       <TableHeader>
         <TableRow>
           <TableHead className="p-4">Transaction Id</TableHead>
+          <TableHead className="hidden md:table-cell p-4">Cashier</TableHead>
+          <TableHead className="hidden md:table-cell p-4">Service</TableHead>
           <TableHead className="p-4">Status</TableHead>
           <TableHead className="hidden md:table-cell p-4">
             Total Items

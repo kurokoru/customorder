@@ -13,7 +13,7 @@ import CustomOrderBody from './components/CustomOrderBody';
 import CustomOrderDetail from './components/CustomOrderDetail';
 import FullscreenButton from '@/components/fullscreen/fullscreen';
 import { Button } from '@/components/ui/button';
-import { ReceiptText, Sheet, Plus, Trash2, Archive } from 'lucide-react';
+import { ReceiptText, Sheet, Plus, Trash2, Archive, Wand2 } from 'lucide-react';
 import { CustomOrderAddDialog } from './components/CustomOrderAddDialog';
 import axios from 'axios';
 import eventBus from '@/lib/even';
@@ -212,6 +212,16 @@ export default function CustomOrderForm() {
                   title="View Custom Records"
                 >
                   <Archive />
+                </Button>
+              </div>
+              <div className="pl-1">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => router.push('/orders/custom/wizard')}
+                  title="Order Wizard"
+                >
+                  <Wand2 />
                 </Button>
               </div>
             </div>

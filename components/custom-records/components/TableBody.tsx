@@ -19,6 +19,8 @@ interface CustomRecordsData {
   totalItems: number;
   id: string;
   totalAmount: string | null;
+  cashierName: string | null;
+  serviceType: string | null;
   createdAt: Date;
   isComplete: boolean;
   items: CustomOrderItem[];
@@ -56,6 +58,18 @@ const TableBodyCustomRecords: React.FC<TableBodyCustomRecordsProps> = ({ data })
               onClick={() => handleRowClick(item.id)}
             >
               <TableCell className="font-medium pl-4">{item.id}</TableCell>
+              <TableCell className="hidden md:table-cell">
+                {item.cashierName || 'N/A'}
+              </TableCell>
+              <TableCell className="hidden md:table-cell">
+                {item.serviceType ? (
+                  <Badge variant="outline" className="capitalize">
+                    {item.serviceType}
+                  </Badge>
+                ) : (
+                  'N/A'
+                )}
+              </TableCell>
               <TableCell>
                 <Badge
                   variant="outline"

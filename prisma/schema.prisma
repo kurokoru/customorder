@@ -89,6 +89,8 @@ model Transaction {
 model CustomTransaction {
   id          String             @id @default(cuid())
   totalAmount Decimal?
+  cashierName String?
+  serviceType String?
   createdAt   DateTime           @default(now())
   isComplete  Boolean            @default(false)
   items       CustomOrderItem[]

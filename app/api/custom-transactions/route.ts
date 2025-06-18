@@ -106,6 +106,8 @@ export const GET = async (request: Request) => {
 // Handler function for POST request to create a new custom transaction
 export const POST = async (request: Request) => {
   try {
+    const body = await request.json();
+    
     // Generate a unique ID for the new custom transaction
     const customId = await generateUniqueId();
 
@@ -113,6 +115,8 @@ export const POST = async (request: Request) => {
     const newCustomTransaction = await prisma.customTransaction.create({
       data: {
         id: customId,
+        cashierName: body.cashierName || null,
+        serviceType: body.serviceType || null,
       },
     });
 

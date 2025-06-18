@@ -28,6 +28,8 @@ export const fetchCustomRecords = async ({
       select: {
         id: true,
         totalAmount: true,
+        cashierName: true,
+        serviceType: true,
         createdAt: true,
         isComplete: true,
         items: {
