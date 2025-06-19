@@ -90,6 +90,9 @@ model CustomTransaction {
   id          String             @id @default(cuid())
   totalAmount Decimal?
   cashierName String?
+  customerName String?
+  arrival     Date
+  departure   Date
   serviceType String?
   createdAt   DateTime           @default(now())
   isComplete  Boolean            @default(false)

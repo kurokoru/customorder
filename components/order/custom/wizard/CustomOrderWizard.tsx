@@ -9,6 +9,9 @@ import ReviewStep from './components/ReviewStep';
 
 export interface WizardData {
   cashierName: string;
+  arrival?: Date | null;
+  departure?: Date | null;
+  customerName?: string | null;
   serviceType: 'food' | 'room' | 'beverage' | '';
   items: {
     id: string;
@@ -23,6 +26,9 @@ export default function CustomOrderWizard() {
   const [wizardData, setWizardData] = useState<WizardData>({
     cashierName: '',
     serviceType: '',
+    arrival: '',
+    departure: '',
+    customerName: '',
     items: [],
   });
 
@@ -47,7 +53,7 @@ export default function CustomOrderWizard() {
   const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return wizardData.cashierName.trim() !== '' && wizardData.serviceType !== '';
+        return wizardData.cashierName.trim() !== '' && wizardData.serviceType !== '' && wizardData.customerName?.trim() !== '';
       case 2:
         return wizardData.items.length > 0;
       case 3:

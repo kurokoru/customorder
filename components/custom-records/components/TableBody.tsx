@@ -20,6 +20,9 @@ interface CustomRecordsData {
   id: string;
   totalAmount: string | null;
   cashierName: string | null;
+  arrival: string | null;
+  departure: Date | null;
+  customerName: string | null;
   serviceType: string | null;
   createdAt: Date;
   isComplete: boolean;

@@ -23,9 +23,12 @@ interface NewItem {
 
 export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   const [newItem, setNewItem] = useState<NewItem>({
+    date: '',
     itemName: '',
-    price: '',
+    reference: '',
     quantity: 1,
+    price: '',
+    total: 0,
   });
   const [editingItem, setEditingItem] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -56,9 +59,12 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
 
     const item = {
       id: editingItem || Date.now().toString(),
+      date: new Date().now().toISOString(),
       itemName: newItem.itemName.trim(),
-      price: parseFloat(newItem.price),
+      reference: newItem.reference.trim(),
       quantity: newItem.quantity,
+      price: parseFloat(newItem.price),
+      total: parseFloat(newItem.price) * newItem.quantity,
     };
 
     let updatedItems;
@@ -69,7 +75,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
     }
 
     onUpdate({ items: updatedItems });
-    setNewItem({ itemName: '', price: '', quantity: 1 });
+    setNewItem({ date: '', itemName: '', quantity: 1, price: '', total: 0 });
     setEditingItem(null);
     setIsDialogOpen(false);
     setErrors({});
@@ -83,8 +89,10 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   const editItem = (item: typeof data.items[0]) => {
     setNewItem({
       itemName: item.itemName,
-      price: item.price.toString(),
+      reference: item.reference || '',
       quantity: item.quantity,
+      price: item.price.toString(),
+      total: item.total,
     });
     setEditingItem(item.id);
     setIsDialogOpen(true);
@@ -106,7 +114,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   };
 
   const resetForm = () => {
-    setNewItem({ itemName: '', price: '', quantity: 1 });
+    setNewItem({ date: '', itemName: '', quantity: 1, price: '', total: 0 });
     setEditingItem(null);
     setErrors({});
   };
@@ -120,6 +128,9 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
         </Badge>
         <Badge variant="outline" className="text-sm">
           Cashier: {data.cashierName}
+        </Badge>
+        <Badge variant="outline" className="text-sm">
+          Customer: {data.customerName || 'N/A'}
         </Badge>
       </div>
 
@@ -153,6 +164,16 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                 placeholder="Enter item name"
               />
               {errors.itemName && <p className="text-sm text-red-500">{errors.itemName}</p>}
+            </div>
+
+            <div>
+              <Label htmlFor="reference">Reference</Label>
+              <Input
+                id="itemName"
+                value={newItem.itemName}
+                onChange={(e) => setNewItem({ ...newItem, reference: e.target.value })}
+                placeholder="Enter reference (optional)"
+              />
             </div>
 
             <div>
