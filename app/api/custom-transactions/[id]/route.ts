@@ -59,7 +59,6 @@ export const PATCH = async (
         id: String(params.id),
       },
       data: {
-        totalAmount,
         isComplete: true,
       },
     });

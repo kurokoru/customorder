@@ -24,10 +24,15 @@ interface CustomOrderItem {
 }
 
 interface CustomRecordsData {
+  id: string;
+  cashierName: string;
+  arrival: string;
+  departure: string;
+  customerName: string;
+  serviceType: string;
   totalQuantity: number;
   totalItems: number;
-  id: string;
-  totalAmount: string | null;
+  totalAmount: string;
   createdAt: Date;
   isComplete: boolean;
   items: CustomOrderItem[];
@@ -51,13 +56,19 @@ export async function CustomRecords(props: PageProps) {
   
   const { data, metadata } = result;
   const convertedData: CustomRecordsData[] = data.map((item) => ({
+    id: item.id,
+    cashierName: item.cashierName,
+    arrival: "arrival",
+    departure: "arrival",
+    customerName: "arrival",
+    serviceType: item.serviceType,
     totalQuantity: item.totalQuantity,
     totalItems: item.totalItems,
     id: item.id,
     totalAmount: item.totalAmount ? item.totalAmount.toString() : null,
     createdAt: item.createdAt,
     isComplete: item.isComplete,
-    items: item.items,
+    items: [],
   }));
   
   return (

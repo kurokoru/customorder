@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { User, Coffee, Bed, Utensils, Calendar } from 'lucide-react';
+import { User, Package, Bed, Utensils } from 'lucide-react';
 import { WizardData } from '../CustomOrderWizard';
 
 interface CashierServiceStepProps {
@@ -15,19 +15,16 @@ interface CashierServiceStepProps {
 const serviceOptions = [
   { value: 'food', label: 'Food', icon: Utensils, color: 'bg-orange-500' },
   { value: 'room', label: 'Room', icon: Bed, color: 'bg-blue-500' },
-  { value: 'all services', label: 'Room & Restaurant', icon: Coffee, color: 'bg-green-500' },
+  { value: 'packages', label: 'Packages', icon: Package, color: 'bg-green-500' },
 ] as const;
 
 export default function CashierServiceStep({ data, onUpdate }: CashierServiceStepProps) {
   const [cashierName, setCashierName] = useState(data.cashierName);
   const [serviceType, setServiceType] = useState(data.serviceType);
-  const [arrival, setArrival] = useState(data.arrival);
-  const [departure, setDeparture] = useState(data.departure);
-  const [customerName, setCustomerName] = useState(data.customerName);
 
   useEffect(() => {
-    onUpdate({ cashierName, serviceType, arrival, departure, customerName });
-  }, [cashierName, serviceType,arrival, departure, customerName, onUpdate]);
+    onUpdate({ cashierName, serviceType });
+  }, [cashierName, serviceType, onUpdate]);
 
   const handleServiceSelect = (service: typeof serviceOptions[0]['value']) => {
     setServiceType(service);
@@ -35,62 +32,11 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
 
   return (
     <div className="space-y-6">
-      {/* Customer Name Input */}
+      {/* Cashier Name Input */}
       <div className="space-y-2">
-        <Label htmlFor="customerName" className="text-base font-medium flex items-center gap-2">
+        <Label htmlFor="cashierName" className="text-base font-medium flex items-center gap-2">
           <User className="h-4 w-4" />
-          Customer Name
-        </Label>
-        <Input
-          id="customerName"
-          type="text"
-          placeholder="Enter customer name"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-          className="text-base"
-        />
-        {customerName.trim() === '' && (
-          <p className="text-sm text-red-500">Customer name is required</p>
-        )}
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="arrival" className="text-base font-medium flex items-center gap-2">
-          <Calendar className="h-4 w-4" />
-          Arrival
-        </Label>
-        <Input
-          id="arrival"
-          type="text"
-          placeholder="Enter arrival"
-          value={arrival}
-          onChange={(e) => setArrival(e.target.value)}
-          className="text-base"
-        />
-        {arrival.trim() === '' && (
-          <p className="text-sm text-red-500">Arrival date is required</p>
-        )}
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="arrival" className="text-base font-medium flex items-center gap-2">
-          <Calendar className="h-4 w-4" />
-          Departure
-        </Label>
-        <Input
-          id="departure"
-          type="text"
-          placeholder="Enter departure"
-          value={departure}
-          onChange={(e) => setDeparture(e.target.value)}
-          className="text-base"
-        />
-        {cashierName.trim() === '' && (
-          <p className="text-sm text-red-500">Departure is required</p>
-        )}
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="arrival" className="text-base font-medium flex items-center gap-2">
-          <User className="h-4 w-4" />
-          Cashier 
+          Cashier Name
         </Label>
         <Input
           id="cashierName"
@@ -104,6 +50,7 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
           <p className="text-sm text-red-500">Cashier name is required</p>
         )}
       </div>
+
       {/* Service Type Selection */}
       <div className="space-y-4">
         <Label className="text-base font-medium">Service Type</Label>

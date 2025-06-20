@@ -15,25 +15,25 @@ export async function GET(req: NextRequest) {
     });
 
     // Aggregate total amount
-    const totalAmount = await prisma.transaction.aggregate({
-      _sum: {
-        totalAmount: true,
-      },
-    });
+    // const totalAmount = await prisma.transaction.aggregate({
+    //   _sum: {
+    //     totalAmount: true,
+    //   },
+    // });
 
-    // Aggregate total quantity
-    const totalQuantity = await prisma.onSaleProduct.aggregate({
-      _sum: {
-        quantity: true,
-      },
-    });
+    // // Aggregate total quantity
+    // const totalQuantity = await prisma.onSaleProduct.aggregate({
+    //   _sum: {
+    //     quantity: true,
+    //   },
+    // });
 
     // Disconnect Prisma client
     await prisma.$disconnect();
 
     // Return aggregated data in the response
     return NextResponse.json(
-      { totalStock, totalAmount, totalQuantity },
+      { totalStock },
       { status: 200 }
     );
   } catch (error) {

@@ -27,7 +27,7 @@ type Data = {
   totalQuantity: number;
   totalItems: number;
   id: string;
-  totalAmount: string | null;
+  totalAmount: string;
   createdAt: Date;
   isComplete: boolean;
   items: CustomOrderItems[];

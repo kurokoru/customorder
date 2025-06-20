@@ -15,7 +15,7 @@ interface Product {
 interface Recordsdata {
   totalQuantity: number;
   id: string;
-  totalAmount: string | null;
+  totalAmount: string;
   createdAt: Date;
   isComplete: boolean;
   products: Product[]; // Menggunakan array untuk produk

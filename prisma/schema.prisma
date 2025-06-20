@@ -80,7 +80,7 @@ model OnSaleProduct {
 
 model Transaction {
   id          String          @id @default(cuid())
-  totalAmount Decimal?
+  totalAmount String?
   createdAt   DateTime        @default(now())
   isComplete  Boolean         @default(false)
   products    OnSaleProduct[]
@@ -88,12 +88,12 @@ model Transaction {
 
 model CustomTransaction {
   id          String             @id @default(cuid())
-  totalAmount Decimal?
-  cashierName String?
-  customerName String?
-  arrival     Date
-  departure   Date
-  serviceType String?
+  totalAmount String
+  cashierName String
+  serviceType String
+  customerName String
+  arrival String?
+  departure String?
   createdAt   DateTime           @default(now())
   isComplete  Boolean            @default(false)
   items       CustomOrderItem[]

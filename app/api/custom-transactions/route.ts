@@ -115,9 +115,20 @@ export const POST = async (request: Request) => {
     const newCustomTransaction = await prisma.customTransaction.create({
       data: {
         id: customId,
-        cashierName: body.cashierName || null,
-        serviceType: body.serviceType || null,
-      },
+        cashierName: body.cashierName,
+        serviceType: body.serviceType,
+        customerName: body.customerName,
+        arrival: body.arrival,
+        departure: body.departure,
+        totalAmount: parseFloat(body.totalAmount).toString(),
+        isComplete: body.isComplete,
+        items: {
+          create: body.items.map((item: any) => ({
+            itemName: item.itemName,
+            price: parseFloat(item.price),
+            quantity: parseInt(item.quantity, 10),
+          })),
+      }},
     });
 
     return NextResponse.json(newCustomTransaction, { status: 201 });

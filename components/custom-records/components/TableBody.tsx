@@ -15,17 +15,17 @@ interface CustomOrderItem {
 }
 
 interface CustomRecordsData {
-  totalQuantity: number;
-  totalItems: number;
   id: string;
-  totalAmount: string | null;
-  cashierName: string | null;
-  arrival: string | null;
-  departure: Date | null;
-  customerName: string | null;
-  serviceType: string | null;
+  cashierName: string;
+  arrival: string;
+  totalItems: number;
+  totalAmount: string;
+  departure: string;
+  customerName: string;
+  serviceType: string;
   createdAt: Date;
   isComplete: boolean;
+  totalQuantity: number;
   items: CustomOrderItem[];
 }
 
@@ -64,6 +64,12 @@ const TableBodyCustomRecords: React.FC<TableBodyCustomRecordsProps> = ({ data })
               <TableCell className="hidden md:table-cell">
                 {item.cashierName || 'N/A'}
               </TableCell>
+                <TableCell className="hidden md:table-cell">
+                {item.arrival || 'N/A'}
+              </TableCell>
+                <TableCell className="hidden md:table-cell">
+                {item.departure || 'N/A'}
+              </TableCell>
               <TableCell className="hidden md:table-cell">
                 {item.serviceType ? (
                   <Badge variant="outline" className="capitalize">
@@ -92,7 +98,7 @@ const TableBodyCustomRecords: React.FC<TableBodyCustomRecordsProps> = ({ data })
                 {item.totalQuantity}
               </TableCell>
               <TableCell className="pl-5">
-                ${item.totalAmount ? parseFloat(item.totalAmount).toFixed(2) : '0.00'}
+                ${item.totalAmount}
               </TableCell>
               <TableCell className="hidden md:table-cell pl-3">
                 {item.createdAt.toLocaleDateString()}

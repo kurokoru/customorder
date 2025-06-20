@@ -23,7 +23,7 @@ type CustomRecords = {
   totalQuantity: number;
   totalItems: number;
   id: string;
-  totalAmount: string | null;
+  totalAmount: string;
   createdAt: Date;
   isComplete: boolean;
   items: CustomOrderItems[];

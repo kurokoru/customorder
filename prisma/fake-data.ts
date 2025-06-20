@@ -86,13 +86,23 @@ export function fakeTransactionComplete() {
 }
 export function fakeCustomTransaction() {
   return {
-    totalAmount: undefined,
+    totalAmount: faker.lorem.words(5),
+    cashierName: faker.lorem.words(5),
+    serviceType: faker.lorem.words(5),
+    customerName: faker.lorem.words(5),
+    arrival: undefined,
+    departure: undefined,
   };
 }
 export function fakeCustomTransactionComplete() {
   return {
     id: faker.string.uuid(),
-    totalAmount: undefined,
+    totalAmount: faker.lorem.words(5),
+    cashierName: faker.lorem.words(5),
+    serviceType: faker.lorem.words(5),
+    customerName: faker.lorem.words(5),
+    arrival: undefined,
+    departure: undefined,
     createdAt: new Date(),
     isComplete: false,
   };

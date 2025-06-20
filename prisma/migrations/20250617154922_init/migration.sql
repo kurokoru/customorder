@@ -53,7 +53,7 @@ CREATE TABLE "OnSaleProduct" (
 -- CreateTable
 CREATE TABLE "Transaction" (
     "id" TEXT NOT NULL,
-    "totalAmount" DECIMAL(65,30),
+    "totalAmount" varchar(255),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isComplete" BOOLEAN NOT NULL DEFAULT false,
 
@@ -63,7 +63,7 @@ CREATE TABLE "Transaction" (
 -- CreateTable
 CREATE TABLE "CustomTransaction" (
     "id" TEXT NOT NULL,
-    "totalAmount" DECIMAL(65,30),
+    "totalAmount" varchar(255),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isComplete" BOOLEAN NOT NULL DEFAULT false,
 

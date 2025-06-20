@@ -43,7 +43,7 @@ Table OnSaleProduct {
 
 Table Transaction {
   id String [pk]
-  totalAmount Decimal
+  totalAmount String
   createdAt DateTime [default: `now()`, not null]
   isComplete Boolean [not null, default: false]
   products OnSaleProduct [not null]
@@ -51,7 +51,12 @@ Table Transaction {
 
 Table CustomTransaction {
   id String [pk]
-  totalAmount Decimal
+  totalAmount String [not null]
+  cashierName String [not null]
+  serviceType String [not null]
+  customerName String [not null]
+  arrival String
+  departure String
   createdAt DateTime [default: `now()`, not null]
   isComplete Boolean [not null, default: false]
   items CustomOrderItem [not null]
