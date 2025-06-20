@@ -42,7 +42,7 @@ export function NavbarSheet() {
           ))}
 
           {/* Include ScrollAreaDemo component */}
-          <ScrollAreaDemo />
+          {/* <ScrollAreaDemo /> */}
         </nav>
       </SheetContent>
     </>

@@ -73,13 +73,13 @@ export function fakeOnSaleProductComplete() {
 }
 export function fakeTransaction() {
   return {
-    totalAmount: undefined,
+    totalAmount: "",
   };
 }
 export function fakeTransactionComplete() {
   return {
     id: faker.string.uuid(),
-    totalAmount: undefined,
+    totalAmount: "",
     createdAt: new Date(),
     isComplete: false,
   };

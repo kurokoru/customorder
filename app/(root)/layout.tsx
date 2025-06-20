@@ -47,7 +47,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       }
     };
 
-    fetchShopData();
+    // fetchShopData();
 
     const handleEventBusEvent = () => {
       fetchShopData();

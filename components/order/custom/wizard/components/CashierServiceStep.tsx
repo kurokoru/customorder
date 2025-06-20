@@ -21,10 +21,13 @@ const serviceOptions = [
 export default function CashierServiceStep({ data, onUpdate }: CashierServiceStepProps) {
   const [cashierName, setCashierName] = useState(data.cashierName);
   const [serviceType, setServiceType] = useState(data.serviceType);
+  const [customerName, setCustomerName] = useState(data.customerName);
+  const [arrival, setArrival] = useState(data.arrival);
+  const [departure, setDeparture] = useState(data.departure);
 
   useEffect(() => {
     onUpdate({ cashierName, serviceType });
-  }, [cashierName, serviceType, onUpdate]);
+  }, [cashierName, serviceType, customerName, onUpdate]);
 
   const handleServiceSelect = (service: typeof serviceOptions[0]['value']) => {
     setServiceType(service);
@@ -48,6 +51,60 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
         />
         {cashierName.trim() === '' && (
           <p className="text-sm text-red-500">Cashier name is required</p>
+        )}
+      </div>
+        {/* Customer Name Input */}
+      <div className="space-y-2">
+        <Label htmlFor="customerName" className="text-base font-medium flex items-center gap-2">
+          <User className="h-4 w-4" />
+          Customer Name
+        </Label>
+        <Input
+          id="customerName"
+          type="text"
+          placeholder="Enter customer name"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
+          className="text-base"
+        />
+        {customerName.trim() === '' && (
+          <p className="text-sm text-red-500">Customer name is required</p>
+        )}
+      </div>
+
+      {/* Customer Name Input */}
+      <div className="space-y-2">
+        <Label htmlFor="arrival" className="text-base font-medium flex items-center gap-2">
+          <User className="h-4 w-4" />
+          arrival 
+        </Label>
+        <Input
+          id="arrival"
+          type="text"
+          placeholder="Enter arrival date"
+          value={arrival}
+          onChange={(e) => setArrival(e.target.value)}
+          className="text-base"
+        />
+        {arrival.trim() === '' && (
+          <p className="text-sm text-red-500">arrival is required</p>
+        )}
+      </div>
+        <div className="space-y-2">
+        <Label htmlFor="departure" className="text-base font-medium flex items-center gap-2">
+          <User className="h-4 w-4" />
+          departure 
+        </Label>
+        <Input
+          id="departure"
+          type="text"
+          placeholder="Enter departure date"
+          value={departure}
+          onChange={(e) => setDeparture(e.target.value)}
+          className="text-base"
+        />
+        {departure.trim() === '' && (
+          <p className="text-sm text-red-500">departure is required</p>
         )}
       </div>
 
@@ -92,6 +149,8 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
         <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <h3 className="font-semibold mb-2">Summary</h3>
           <p><strong>Cashier:</strong> {cashierName}</p>
+          <p><strong>Customer:</strong> {customerName}</p>
+          
           <p><strong>Service:</strong> {serviceOptions.find(s => s.value === serviceType)?.label}</p>
         </div>
       )}

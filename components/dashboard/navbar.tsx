@@ -31,7 +31,7 @@ function Navbar() {
             </Link>
           ))}
           {/* Include ScrollAreaDemo component */}
-          <ScrollAreaDemo />
+          {/* <ScrollAreaDemo /> */}
         </nav>
       </div>
     </>

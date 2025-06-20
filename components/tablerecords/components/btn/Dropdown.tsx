@@ -20,7 +20,7 @@ type Products = {
 type Records = {
   totalQuantity: number;
   id: string;
-  totalAmount: string | null;
+  totalAmount: string;
   createdAt: Date;
   isComplete: boolean;
   products: Products[];
