@@ -26,10 +26,10 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
   const [departure, setDeparture] = useState(data.departure);
 
   useEffect(() => {
-    onUpdate({ cashierName, serviceType });
-  }, [cashierName, serviceType, customerName, onUpdate]);
+    onUpdate({ cashierName, serviceType, customerName, arrival, departure });
+  }, [cashierName, serviceType, customerName, arrival, departure, onUpdate]);
 
-  const handleServiceSelect = (service: typeof serviceOptions[0]['value']) => {
+  const handleServiceSelect = (service: 'food' | 'room' | 'packages') => {
     setServiceType(service);
   };
 

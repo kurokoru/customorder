@@ -28,7 +28,7 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
         return <Utensils className="h-4 w-4" />;
       case 'room':
         return <Bed className="h-4 w-4" />;
-      case 'beverage':
+      case 'packages':
         return <Coffee className="h-4 w-4" />;
       default:
         return null;

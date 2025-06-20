@@ -54,7 +54,7 @@ export default function CustomOrderWizard() {
     switch (currentStep) {
       case 1:
         console.log('Checking step 1 conditions', wizardData.customerName.trim() === '');
-        return  wizardData.customerName.trim() === '';
+        return wizardData.customerName.trim() === '';
       case 2:
         return wizardData.items.length > 0;
       case 3:
