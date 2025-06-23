@@ -4,7 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { User, Package, Bed, Utensils } from 'lucide-react';
+import { DatePicker } from '@/components/ui/date-picker';
+import { User, Package, Bed, Utensils, Calendar } from 'lucide-react';
 import { WizardData } from '../CustomOrderWizard';
 
 interface CashierServiceStepProps {
@@ -22,12 +23,18 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
   const [cashierName, setCashierName] = useState(data.cashierName);
   const [serviceType, setServiceType] = useState(data.serviceType);
   const [customerName, setCustomerName] = useState(data.customerName);
-  const [arrival, setArrival] = useState(data.arrival);
-  const [departure, setDeparture] = useState(data.departure);
+  const [arrivalDate, setArrivalDate] = useState<Date | undefined>(
+    data.arrival ? new Date(data.arrival) : undefined
+  );
+  const [departureDate, setDepartureDate] = useState<Date | undefined>(
+    data.departure ? new Date(data.departure) : undefined
+  );
 
   useEffect(() => {
+    const arrival = arrivalDate ? arrivalDate.toISOString().split('T')[0] : '';
+    const departure = departureDate ? departureDate.toISOString().split('T')[0] : '';
     onUpdate({ cashierName, serviceType, customerName, arrival, departure });
-  }, [cashierName, serviceType, customerName, arrival, departure, onUpdate]);
+  }, [cashierName, serviceType, customerName, arrivalDate, departureDate, onUpdate]);
 
   const handleServiceSelect = (service: 'food' | 'room' | 'packages') => {
     setServiceType(service);
@@ -72,39 +79,37 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
         )}
       </div>
 
-      {/* Customer Name Input */}
+      {/* Arrival Date Input */}
       <div className="space-y-2">
         <Label htmlFor="arrival" className="text-base font-medium flex items-center gap-2">
-          <User className="h-4 w-4" />
-          arrival 
+          <Calendar className="h-4 w-4" />
+          Arrival Date
         </Label>
-        <Input
-          id="arrival"
-          type="text"
-          placeholder="Enter arrival date"
-          value={arrival}
-          onChange={(e) => setArrival(e.target.value)}
-          className="text-base"
+        <DatePicker
+          date={arrivalDate}
+          onDateChange={setArrivalDate}
+          placeholder="Select arrival date"
+          className="w-full"
         />
-        {arrival.trim() === '' && (
-          <p className="text-sm text-red-500">arrival is required</p>
+        {!arrivalDate && (
+          <p className="text-sm text-red-500">Arrival date is required</p>
         )}
       </div>
-        <div className="space-y-2">
+
+      {/* Departure Date Input */}
+      <div className="space-y-2">
         <Label htmlFor="departure" className="text-base font-medium flex items-center gap-2">
-          <User className="h-4 w-4" />
-          departure 
+          <Calendar className="h-4 w-4" />
+          Departure Date
         </Label>
-        <Input
-          id="departure"
-          type="text"
-          placeholder="Enter departure date"
-          value={departure}
-          onChange={(e) => setDeparture(e.target.value)}
-          className="text-base"
+        <DatePicker
+          date={departureDate}
+          onDateChange={setDepartureDate}
+          placeholder="Select departure date"
+          className="w-full"
         />
-        {departure.trim() === '' && (
-          <p className="text-sm text-red-500">departure is required</p>
+        {!departureDate && (
+          <p className="text-sm text-red-500">Departure date is required</p>
         )}
       </div>
 
@@ -150,7 +155,8 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
           <h3 className="font-semibold mb-2">Summary</h3>
           <p><strong>Cashier:</strong> {cashierName}</p>
           <p><strong>Customer:</strong> {customerName}</p>
-          
+          {arrivalDate && <p><strong>Arrival:</strong> {arrivalDate.toLocaleDateString()}</p>}
+          {departureDate && <p><strong>Departure:</strong> {departureDate.toLocaleDateString()}</p>}
           <p><strong>Service:</strong> {serviceOptions.find(s => s.value === serviceType)?.label}</p>
         </div>
       )}

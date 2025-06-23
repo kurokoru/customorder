@@ -144,13 +144,15 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
             {data.items.map((item, index) => (
               <div key={item.id} className="flex justify-between items-center py-2">
                 <div>
-                  <span className="font-medium">{item.itemName}</span>
+                  <span className="font-medium">{item.orderDate} </span> 
+                  <span className="font-medium">{item.itemName} </span> 
+                  <span className="font-medium">{item.reference} </span>
                   <span className="text-muted-foreground ml-2">
-                    ${item.price.toFixed(2)} × {item.quantity}
+                    Rp.{item.price.toFixed(2)} × {item.quantity}
                   </span>
                 </div>
                 <span className="font-medium">
-                  ${(item.price * item.quantity).toFixed(2)}
+                  Rp.{(item.price * item.quantity).toFixed(2)}
                 </span>
               </div>
             ))}

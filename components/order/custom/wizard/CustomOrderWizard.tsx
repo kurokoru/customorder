@@ -19,6 +19,7 @@ export interface WizardData {
     reference: string;
     price: number;
     quantity: number;
+    orderDate?: string;
   }[];
 }
 

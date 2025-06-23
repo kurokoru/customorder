@@ -6,9 +6,10 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Minus, Trash2, Edit3 } from 'lucide-react';
+import { Plus, Minus, Trash2, Edit3,Calendar } from 'lucide-react';
 import { WizardData } from '../CustomOrderWizard';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { DatePicker } from '@/components/ui/date-picker';
 
 interface ItemsStepProps {
   data: WizardData;
@@ -16,7 +17,7 @@ interface ItemsStepProps {
 }
 
 interface NewItem {
-  
+  orderDate: string;
   itemName: string;
   reference: string;
   price: string;
@@ -25,6 +26,7 @@ interface NewItem {
 
 export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   const [newItem, setNewItem] = useState<NewItem>({
+    orderDate: '',
     itemName: '',
     price: '',
     reference: '',
@@ -33,12 +35,16 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   const [editingItem, setEditingItem] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
+  const [orderDate, setOrderDate] = useState<Date | undefined>(undefined);
   const validateItem = (item: NewItem): boolean => {
     const newErrors: { [key: string]: string } = {};
 
     if (item.itemName.trim() === '') {
       newErrors.itemName = 'Item name is required';
+    }
+
+    if (item.orderDate.trim() === '') {
+      newErrors.orderDate = 'Order date is required';
     }
 
     const priceNum = parseFloat(item.price);
@@ -59,6 +65,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
 
     const item = {
       id: editingItem || Date.now().toString(),
+      orderDate: newItem.orderDate,
       itemName: newItem.itemName.trim(),
       price: parseFloat(newItem.price),
       quantity: newItem.quantity,
@@ -73,10 +80,11 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
     }
 
     onUpdate({ items: updatedItems });
-    setNewItem({ itemName: '', price: '', quantity: 0, reference: '' });
+    setNewItem({ itemName: '', price: '', quantity: 1, reference: '', orderDate: '' });
     setEditingItem(null);
     setIsDialogOpen(false);
     setErrors({});
+    setOrderDate(undefined);
   };
 
   const removeItem = (id: string) => {
@@ -85,12 +93,15 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   };
 
   const editItem = (item: typeof data.items[0]) => {
+    const itemOrderDate = item.orderDate || new Date().toISOString().split('T')[0];
     setNewItem({
       itemName: item.itemName,
       price: item.price.toString(),
       quantity: item.quantity,
       reference: item.reference,
+      orderDate: itemOrderDate,
     });
+    setOrderDate(new Date(itemOrderDate));
     setEditingItem(item.id);
     setIsDialogOpen(true);
   };
@@ -111,9 +122,10 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   };
 
   const resetForm = () => {
-    setNewItem({ itemName: '', price: '', quantity: 1, reference: '' });
+    setNewItem({ itemName: '', price: '', quantity: 1, reference: '', orderDate: '' });
     setEditingItem(null);
     setErrors({});
+    setOrderDate(undefined);
   };
 
   return (
@@ -149,18 +161,26 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-
-            <div>
-              <Label htmlFor="date">Date</Label>
-              <Input
-                id="date"
-                type="text"
-                value={newItem.date}
-                onChange={(e) => setNewItem({ ...newItem, date:e.target.value })}
-                placeholder=""
+           {/* Order Date Input */}
+            <div className="space-y-2">
+              <Label htmlFor="orderDate" className="text-base font-medium flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                Order Date
+              </Label>
+              <DatePicker
+                date={orderDate}
+                onDateChange={(date) => {
+                  setOrderDate(date);
+                  setNewItem({ 
+                    ...newItem, 
+                    orderDate: date ? date.toISOString().split('T')[0] : '' 
+                  });
+                }}
+                placeholder="Select order date"
+                className="w-full"
               />
+              {errors.orderDate && <p className="text-sm text-red-500">{errors.orderDate}</p>}
             </div>
-
             <div>
               <Label htmlFor="itemName">Item Name</Label>
               <Input
@@ -243,8 +263,9 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                 <TableRow>
                   <TableHead>Item</TableHead>
                   <TableHead>Reference</TableHead>
-                  <TableHead>Quantity</TableHead>
+                  <TableHead>Order Date</TableHead>
                   <TableHead>Price</TableHead>
+                  <TableHead>Quantity</TableHead>
                   <TableHead>Total</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -254,6 +275,9 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.itemName}</TableCell>
                     <TableCell className="font-medium">{item.reference}</TableCell>
+                    <TableCell className="text-sm">
+                      {item.orderDate ? new Date(item.orderDate).toLocaleDateString() : 'No date'}
+                    </TableCell>
                     <TableCell>${item.price.toFixed(2)}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
