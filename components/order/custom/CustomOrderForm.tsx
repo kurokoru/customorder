@@ -26,6 +26,7 @@ import { useRouter } from 'next/navigation';
 export interface CustomOrderItem {
   id: string;
   itemName: string;
+  reference: string;
   price: number;
   quantity: number;
   transactionId: string;

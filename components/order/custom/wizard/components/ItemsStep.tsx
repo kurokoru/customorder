@@ -16,9 +16,10 @@ interface ItemsStepProps {
 }
 
 interface NewItem {
+  
   itemName: string;
-  price: string;
   reference: string;
+  price: string;
   quantity: number;
 }
 

@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 type CustomOrderItems = {
   id: string;
   itemName: string;
+  reference: string;
   price: number;
   quantity: number;
 };

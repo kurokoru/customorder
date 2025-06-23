@@ -10,6 +10,7 @@ import Dropdown from './btn/Dropdown';
 interface CustomOrderItem {
   id: string;
   itemName: string;
+  reference: string;
   price: number;
   quantity: number;
 }

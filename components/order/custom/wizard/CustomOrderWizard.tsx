@@ -16,6 +16,7 @@ export interface WizardData {
   items: {
     id: string;
     itemName: string;
+    reference: string;
     price: number;
     quantity: number;
   }[];

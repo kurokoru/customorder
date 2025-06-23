@@ -19,6 +19,7 @@ import { toast } from 'react-toastify';
 interface CustomOrderItem {
   id: string;
   itemName: string;
+  reference: string;
   price: number;
   quantity: number;
 }
