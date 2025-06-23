@@ -121,6 +121,12 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
               <span className="font-medium">Cashier:</span>
               <Badge variant="outline">{data.cashierName}</Badge>
             </div>
+              <div className="flex items-center gap-2">
+              <User className="h-4 w-4" />
+              <span className="font-medium">Customer Name:</span>
+              <Badge variant="outline">{data.customerName}</Badge>
+            </div>
+
             <div className="flex items-center gap-2">
               {getServiceIcon()}
               <span className="font-medium">Service:</span>

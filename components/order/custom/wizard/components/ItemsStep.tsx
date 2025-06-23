@@ -18,6 +18,7 @@ interface ItemsStepProps {
 interface NewItem {
   itemName: string;
   price: string;
+  reference: string;
   quantity: number;
 }
 
@@ -25,6 +26,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   const [newItem, setNewItem] = useState<NewItem>({
     itemName: '',
     price: '',
+    reference: '',
     quantity: 1,
   });
   const [editingItem, setEditingItem] = useState<string | null>(null);
@@ -59,6 +61,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
       itemName: newItem.itemName.trim(),
       price: parseFloat(newItem.price),
       quantity: newItem.quantity,
+      reference: newItem.reference,
     };
 
     let updatedItems;
@@ -69,7 +72,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
     }
 
     onUpdate({ items: updatedItems });
-    setNewItem({ itemName: '', price: '', quantity: 1 });
+    setNewItem({ itemName: '', price: '', quantity: 0, reference: '' });
     setEditingItem(null);
     setIsDialogOpen(false);
     setErrors({});
@@ -85,6 +88,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
       itemName: item.itemName,
       price: item.price.toString(),
       quantity: item.quantity,
+      reference: item.reference,
     });
     setEditingItem(item.id);
     setIsDialogOpen(true);
@@ -106,7 +110,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   };
 
   const resetForm = () => {
-    setNewItem({ itemName: '', price: '', quantity: 1 });
+    setNewItem({ itemName: '', price: '', quantity: 1, reference: '' });
     setEditingItem(null);
     setErrors({});
   };
@@ -144,6 +148,18 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+
+            <div>
+              <Label htmlFor="date">Date</Label>
+              <Input
+                id="date"
+                type="text"
+                value={newItem.date}
+                onChange={(e) => setNewItem({ ...newItem, date:e.target.value })}
+                placeholder=""
+              />
+            </div>
+
             <div>
               <Label htmlFor="itemName">Item Name</Label>
               <Input
@@ -154,21 +170,16 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
               />
               {errors.itemName && <p className="text-sm text-red-500">{errors.itemName}</p>}
             </div>
-
             <div>
-              <Label htmlFor="price">Price ($)</Label>
+              <Label htmlFor="reference">Reference</Label>
               <Input
-                id="price"
-                type="number"
-                step="0.01"
-                min="0"
-                value={newItem.price}
-                onChange={(e) => setNewItem({ ...newItem, price: e.target.value })}
-                placeholder="0.00"
+                id="reference"
+                type="text"
+                value={newItem.reference}
+                onChange={(e) => setNewItem({ ...newItem, reference: e.target.value })}
+                placeholder="enter reference"
               />
-              {errors.price && <p className="text-sm text-red-500">{errors.price}</p>}
             </div>
-
             <div>
               <Label htmlFor="quantity">Quantity</Label>
               <div className="flex items-center gap-2">
@@ -199,7 +210,19 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
               </div>
               {errors.quantity && <p className="text-sm text-red-500">{errors.quantity}</p>}
             </div>
-
+            <div>
+              <Label htmlFor="price">Price</Label>
+              <Input
+                id="price"
+                type="number"
+                step="0"
+                min="0"
+                value={newItem.price}
+                onChange={(e) => setNewItem({ ...newItem, price: e.target.value })}
+                placeholder="1000.00"
+              />
+              {errors.price && <p className="text-sm text-red-500">{errors.price}</p>}
+            </div>
             <Button onClick={addItem} className="w-full">
               {editingItem ? 'Update Item' : 'Add Item'}
             </Button>
@@ -218,8 +241,9 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
               <TableHeader>
                 <TableRow>
                   <TableHead>Item</TableHead>
-                  <TableHead>Price</TableHead>
+                  <TableHead>Reference</TableHead>
                   <TableHead>Quantity</TableHead>
+                  <TableHead>Price</TableHead>
                   <TableHead>Total</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -228,6 +252,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                 {data.items.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.itemName}</TableCell>
+                    <TableCell className="font-medium">{item.reference}</TableCell>
                     <TableCell>${item.price.toFixed(2)}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
@@ -248,6 +273,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                         </Button>
                       </div>
                     </TableCell>
+
                     <TableCell>${(item.price * item.quantity).toFixed(2)}</TableCell>
                     <TableCell>
                       <div className="flex gap-1">
