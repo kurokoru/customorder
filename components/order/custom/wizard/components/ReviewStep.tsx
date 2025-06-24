@@ -6,11 +6,12 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CheckCircle, User, Coffee, Bed, Utensils, Receipt } from 'lucide-react';
+import { CheckCircle, User, Coffee, Bed, Utensils, Receipt, Download } from 'lucide-react';
 import { WizardData } from '../CustomOrderWizard';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ReloadIcon } from '@radix-ui/react-icons';
+import jsPDF from 'jspdf';
 
 interface ReviewStepProps {
   data: WizardData;
@@ -86,6 +87,159 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
     }
   };
 
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20;
+    let currentY = 30;
+
+    // Header - Company Info
+    doc.setFontSize(20);
+    doc.setFont('', 'bold');
+    doc.text('PESONA RESTAURANT AND ROOM', pageWidth / 2, currentY, { align: 'center' });
+    
+    currentY += 15;
+    doc.setFontSize(10);
+    doc.setFont('', 'normal');
+    doc.text('Jl. Soekarno Hatta', pageWidth / 2, currentY, { align: 'center' });
+    
+    currentY += 10;
+    doc.text('Labuan Bajo, Manggarai Barat', pageWidth / 2, currentY, { align: 'center' });
+    
+    currentY += 10;
+    doc.text('Phone: 082145250266', pageWidth / 2, currentY, { align: 'center' });
+    
+    currentY += 10;
+    doc.text('Email: hallpesona@gmail.com', pageWidth / 2, currentY, { align: 'center' });
+
+    currentY += 20;
+
+    // Invoice Header
+    doc.setFontSize(12);
+    doc.setFont('', 'bold');
+    
+    // Right side - Invoice details
+    const rightX = pageWidth - margin - 60;
+    doc.setFillColor(0, 0, 0);
+    doc.rect(rightX, currentY, 60, 8, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.text('INVOICE #', rightX + 2, currentY + 6);
+    doc.text('DATE', rightX + 35, currentY + 6);
+    
+    currentY += 8;
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('', 'normal');
+    doc.text(Date.now().toString().slice(-6), rightX + 2, currentY + 6);
+    doc.text(new Date().toLocaleDateString(), rightX + 35, currentY + 6);
+
+    currentY += 20;
+
+    // Bill To Section
+    doc.setFillColor(0, 0, 0);
+    doc.rect(margin, currentY, 50, 8, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('', 'bold');
+    doc.text('BILL TO', margin + 2, currentY + 6);
+
+    currentY += 15;
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('', 'normal');
+    doc.text(`Guest Name: ${data.customerName || 'N/A'}`, margin, currentY);
+    
+    currentY += 10;
+    doc.text(`Cashier: ${data.cashierName}`, margin, currentY);
+    
+    currentY += 10;
+    doc.text(`Service Type: ${data.serviceType.charAt(0).toUpperCase() + data.serviceType.slice(1)}`, margin, currentY);
+
+    // Service details on right
+    const serviceDetailsY = currentY - 20;
+    doc.setFillColor(0, 0, 0);
+    doc.rect(rightX, serviceDetailsY, 60, 8, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('', 'bold');
+    doc.text('Room No:', rightX + 2, serviceDetailsY + 6);
+    doc.text('Res. No:', rightX + 35, serviceDetailsY + 6);
+
+    currentY += 20;
+
+    // Items Table Header
+    doc.setFillColor(0, 0, 0);
+    doc.rect(margin, currentY, pageWidth - 2 * margin, 8, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('', 'bold');
+    doc.text('DESCRIPTION', margin + 2, currentY + 6);
+    doc.text('No. Kamar', margin + 60, currentY + 6);
+    doc.text('QTY', margin + 100, currentY + 6);
+    doc.text('UNIT PRICE', margin + 120, currentY + 6);
+    doc.text('AMOUNT (IDR)', margin + 150, currentY + 6);
+
+    currentY += 8;
+
+    // Items
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('', 'normal');
+    
+    data.items.forEach((item, index) => {
+      if (currentY > 250) { // New page if needed
+        doc.addPage();
+        currentY = 30;
+      }
+      
+      // Draw row border
+      doc.rect(margin, currentY, pageWidth - 2 * margin, 12);
+      
+      doc.text(item.itemName, margin + 2, currentY + 8);
+      doc.text(item.reference || '-', margin + 60, currentY + 8);
+      doc.text(item.quantity.toString(), margin + 100, currentY + 8);
+      doc.text(`Rp.${item.price.toFixed(0)}`, margin + 120, currentY + 8);
+      doc.text(`Rp.${(item.price * item.quantity).toFixed(0)}`, margin + 150, currentY + 8);
+      
+      currentY += 12;
+    });
+
+    // Add some empty rows for the table
+    for (let i = 0; i < 5; i++) {
+      doc.rect(margin, currentY, pageWidth - 2 * margin, 12);
+      currentY += 12;
+    }
+
+    currentY += 10;
+
+    // Thank you message
+    doc.text('Thank you for your business!', margin, currentY);
+
+    // Totals section
+    const totalsX = pageWidth - margin - 80;
+    currentY += 20;
+    
+    doc.setFont('', 'bold');
+    doc.text('SUBTOTAL', totalsX, currentY);
+    doc.text(`Rp.${calculateSubtotal().toFixed(0)}`, totalsX + 40, currentY);
+    
+    currentY += 10;
+    doc.text('TOTAL', totalsX, currentY);
+    doc.text(`Rp.${calculateTotal().toFixed(0)}`, totalsX + 40, currentY);
+
+    currentY += 30;
+
+    // Agreement text
+    doc.setFont('', 'normal');
+    doc.setFontSize(8);
+    doc.text('Regardless of the billing instruction I agree to be held personally liable for payment of the total amount of this bill', 
+             margin, currentY, { maxWidth: pageWidth - 2 * margin });
+
+    currentY += 20;
+
+    // Signature section
+    doc.text('Cashier Signature', margin, currentY);
+    doc.text('Guest Signature', pageWidth - margin - 50, currentY);
+
+    // Save the PDF
+    doc.save(`invoice-${Date.now()}.pdf`);
+    toast.success('PDF exported successfully!');
+  };
+
   if (orderSubmitted) {
     return (
       <div className="text-center space-y-6">
@@ -115,22 +269,21 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Cashier and Service Info */}
-          <div className="flex flex-wrap gap-4">
-            <div className="flex items-center gap-2">
-              <User className="h-4 w-4" />
-              <span className="font-medium">Cashier:</span>
-              <Badge variant="outline">{data.cashierName}</Badge>
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-x-8 gap-y-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <User className="h-4 w-4 shrink-0" />
+              <span className="font-medium truncate">Cashier:</span>
+              <Badge variant="outline" className="truncate max-w-[120px]">{data.cashierName}</Badge>
             </div>
-              <div className="flex items-center gap-2">
-              <User className="h-4 w-4" />
-              <span className="font-medium">Customer Name:</span>
-              <Badge variant="outline">{data.customerName}</Badge>
+            <div className="flex items-center gap-2 min-w-0">
+              <User className="h-4 w-4 shrink-0" />
+              <span className="font-medium truncate">Customer Name:</span>
+              <Badge variant="outline" className="truncate max-w-[120px]">{data.customerName}</Badge>
             </div>
-
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 min-w-0">
               {getServiceIcon()}
-              <span className="font-medium">Service:</span>
-              <Badge variant="outline" className="capitalize">
+              <span className="font-medium truncate">Service:</span>
+              <Badge variant="outline" className="capitalize truncate max-w-[120px]">
                 {data.serviceType}
               </Badge>
             </div>
@@ -141,27 +294,29 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
           {/* Items List */}
           <div className="space-y-3">
             <h3 className="font-semibold">Items Ordered:</h3>
-            {data.items.map((item, index) => (
-              <div key={item.id} className="flex justify-between items-center py-2">
-                <div>
-                  <span className="font-medium">{item.orderDate} </span> 
-                  <span className="font-medium">{item.itemName} </span> 
-                  <span className="font-medium">{item.reference} </span>
-                  <span className="text-muted-foreground ml-2">
-                    Rp.{item.price.toFixed(2)} × {item.quantity}
+            <div className="space-y-2 overflow-x-auto">
+              {data.items.map((item, index) => (
+                <div key={item.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 gap-2 sm:gap-0 border-b last:border-b-0 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 w-full min-w-0">
+                    <span className="font-medium break-words max-w-[120px]">{item.orderDate} </span>
+                    <span className="font-medium break-words max-w-[120px]">{item.itemName} </span>
+                    <span className="font-medium break-words max-w-[120px]">{item.reference} </span>
+                    <span className="text-muted-foreground ml-0 sm:ml-2 break-words max-w-[120px]">
+                      Rp.{item.price.toFixed(2)} × {item.quantity}
+                    </span>
+                  </div>
+                  <span className="font-medium sm:text-right w-full sm:w-auto break-words max-w-[120px]">
+                    Rp.{(item.price * item.quantity).toFixed(2)}
                   </span>
                 </div>
-                <span className="font-medium">
-                  Rp.{(item.price * item.quantity).toFixed(2)}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           <Separator />
 
           {/* Tax Rate Input */}
-          <div className="space-y-2">
+          <div className="space-y-2 max-w-xs w-full">
             <Label htmlFor="taxRate">Tax Rate (%)</Label>
             <Input
               id="taxRate"
@@ -171,17 +326,17 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
               step="0.1"
               value={taxRate}
               onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
-              className="w-32"
+              className="w-full"
             />
           </div>
 
           {/* Price Breakdown */}
           <div className="space-y-2 pt-4">
-            <div className="flex justify-between">
+            <div className="flex justify-between text-sm sm:text-base">
               <span>Subtotal:</span>
               <span>${calculateSubtotal().toFixed(2)}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between text-sm sm:text-base">
               <span>Tax ({taxRate}%):</span>
               <span>${calculateTax().toFixed(2)}</span>
             </div>
@@ -194,8 +349,18 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
         </CardContent>
       </Card>
 
-      {/* Submit Button */}
-      <div className="flex justify-center">
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row justify-center gap-4 w-full">
+        <Button
+          onClick={generatePDF}
+          // disabled={data.items.length === 0}
+          size="lg"
+          variant="outline"
+          className="w-full sm:w-auto px-8"
+        >
+          <Download className="mr-2 h-4 w-4" />
+          Export PDF
+        </Button>
         <Button
           onClick={submitOrder}
           disabled={isSubmitting || data.items.length === 0}
@@ -210,14 +375,26 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
           ) : (
             <>
               <CheckCircle className="mr-2 h-4 w-4" />
-              Submit Order
+              submit Order
             </>
           )}
         </Button>
       </div>
 
+      {/* Download PDF Button */}
+      <div className="flex justify-center w-full">
+        <Button
+          onClick={generatePDF}
+          size="lg"
+          className="w-full sm:w-auto px-8 max-w-md"
+        >
+          <Download className="mr-2 h-4 w-4" />
+          Download PDF
+        </Button>
+      </div>
+
       {/* Order Details for Reference */}
-      <Card className="bg-muted/50">
+      <Card className="bg-muted/50 w-full">
         <CardHeader>
           <CardTitle className="text-sm">Order Details</CardTitle>
         </CardHeader>
