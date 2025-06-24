@@ -42,7 +42,7 @@ export default function Home() {
               variant="secondary"
               asChild
             >
-              <Link href={'/home'}>Home</Link>
+              <Link href={'/orders/custom/wizard'}>Make Order</Link>
             </Button>
           </div>
         </div>
