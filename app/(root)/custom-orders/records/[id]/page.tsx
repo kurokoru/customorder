@@ -218,7 +218,7 @@ export default function CustomOrderDetailPage({ params }: { params: { id: string
                     {item.itemName} x <span>{item.quantity}</span>
                   </span>
                   <span>
-                    ${(item.price * item.quantity).toFixed(2)}
+                    Rp.{(item.price * item.quantity).toFixed(2)}
                   </span>
                 </li>
               ))}
@@ -227,15 +227,15 @@ export default function CustomOrderDetailPage({ params }: { params: { id: string
             <ul className="grid gap-3">
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>Rp.{subtotal.toFixed(2)}</span>
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Tax</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>Rp.{tax.toFixed(2)}</span>
               </li>
               <li className="flex items-center justify-between font-semibold">
                 <span className="text-muted-foreground">Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>Rp.{total.toFixed(2)}</span>
               </li>
             </ul>
           </div>

@@ -280,7 +280,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                       <TableCell className="text-sm">
                         {item.orderDate ? new Date(item.orderDate).toLocaleDateString() : 'No date'}
                       </TableCell>
-                      <TableCell>${item.price.toFixed(2)}</TableCell>
+                      <TableCell>Rp.{item.price.toFixed(2)}</TableCell>
                       <TableCell>
                         <div className="flex items-center">
                           <Button
@@ -300,7 +300,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                           </Button>
                         </div>
                       </TableCell>
-                      <TableCell>${(item.price * item.quantity).toFixed(2)}</TableCell>
+                      <TableCell>Rp.{(item.price * item.quantity).toFixed(2)}</TableCell>
                       <TableCell>
                         <div className="flex gap-1">
                           <Button
@@ -330,12 +330,12 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                 <div key={item.id} className="border rounded-lg p-4 flex flex-col gap-2 bg-muted/50">
                   <div className="flex justify-between">
                     <span className="font-semibold">{item.itemName}</span>
-                    <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
+                    <span className="font-semibold">Rp.{(item.price * item.quantity).toFixed(2)}</span>
                   </div>
                   <div className="text-sm text-muted-foreground">{item.reference}</div>
                   <div className="flex flex-wrap gap-2 text-sm">
                     <span>Order Date: {item.orderDate ? new Date(item.orderDate).toLocaleDateString() : 'No date'}</span>
-                    <span>Price: ${item.price.toFixed(2)}</span>
+                    <span>Price: Rp.{item.price.toFixed(2)}</span>
                     <span>Qty: {item.quantity}</span>
                   </div>
                   <div className="flex gap-2 mt-2">
@@ -375,7 +375,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
             <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <div className="flex justify-between items-center text-lg font-semibold">
                 <span>Total:</span>
-                <span>${calculateTotal().toFixed(2)}</span>
+                <span>Rp.{calculateTotal().toFixed(2)}</span>
               </div>
             </div>
           </CardContent>

@@ -166,11 +166,12 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
     doc.rect(margin, currentY, pageWidth - 2 * margin, 8, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFont('', 'bold');
-    doc.text('DESCRIPTION', margin + 2, currentY + 6);
-    doc.text('No. Kamar', margin + 60, currentY + 6);
-    doc.text('QTY', margin + 100, currentY + 6);
-    doc.text('UNIT PRICE', margin + 120, currentY + 6);
-    doc.text('AMOUNT (IDR)', margin + 150, currentY + 6);
+    doc.text('Date', margin + 2, currentY + 6);
+    doc.text('Item', margin + 30, currentY + 6);
+    doc.text('Reference', margin + 60, currentY + 6);
+    doc.text('Qty', margin + 100, currentY + 6);
+    doc.text('Price', margin + 120, currentY + 6);
+    doc.text('Amount(IDR)', margin + 150, currentY + 6);
 
     currentY += 8;
 
@@ -186,8 +187,8 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
       
       // Draw row border
       doc.rect(margin, currentY, pageWidth - 2 * margin, 12);
-      
-      doc.text(item.itemName, margin + 2, currentY + 8);
+      doc.text(item.orderDate, margin + 2, currentY + 8);
+      doc.text(item.itemName, margin + 30, currentY + 8);
       doc.text(item.reference || '-', margin + 60, currentY + 8);
       doc.text(item.quantity.toString(), margin + 100, currentY + 8);
       doc.text(`Rp.${item.price.toFixed(0)}`, margin + 120, currentY + 8);
@@ -219,19 +220,11 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
     doc.text('TOTAL', totalsX, currentY);
     doc.text(`Rp.${calculateTotal().toFixed(0)}`, totalsX + 40, currentY);
 
-    currentY += 10;
-
-    // Agreement text
-    doc.setFont('', 'normal');
-    doc.setFontSize(8);
-    doc.text('Regardless of the billing instruction I agree to be held personally liable for payment of the total amount of this bill', 
-             margin, currentY, { maxWidth: pageWidth - 2 * margin });
-
-    currentY += 10;
+    currentY += 30;
 
     // Signature section
-    doc.text('Guest Signature', pageWidth - margin - 50, currentY);
-    doc.text('Pesona Indah Room & Restaurant', pageWidth - margin - 50, currentY+5);
+    doc.text('Guest Signature', pageWidth - margin - 50, currentY+10);
+    doc.text('Pesona Indah Room & Restaurant', pageWidth - margin - 80, currentY+15);
 
     // Save the PDF
     doc.save(`invoice-${Date.now()}.pdf`);
@@ -349,16 +342,6 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row justify-center gap-4 w-full">
-        <Button
-          onClick={generatePDF}
-          // disabled={data.items.length === 0}
-          size="lg"
-          variant="outline"
-          className="w-full sm:w-auto px-8"
-        >
-          <Download className="mr-2 h-4 w-4" />
-          Export PDF
-        </Button>
         <Button
           onClick={submitOrder}
           disabled={isSubmitting || data.items.length === 0}

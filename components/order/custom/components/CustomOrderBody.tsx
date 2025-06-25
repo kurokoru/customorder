@@ -33,7 +33,7 @@ function CustomOrderBody({ data }: CustomOrderBodyProps) {
               </TableCell>
               {/* Render the item price */}
               <TableCell className="hidden md:table-cell">
-                $ {item.price.toFixed(2)}
+                Rp.{item.price.toFixed(2)}
               </TableCell>
               {/* Render the quantity */}
               <TableCell className="hidden sm:table-cell">
@@ -41,7 +41,7 @@ function CustomOrderBody({ data }: CustomOrderBodyProps) {
               </TableCell>
               {/* Render the total price */}
               <TableCell className="hidden sm:table-cell">
-                $ {totalPrice.toFixed(2)}
+                Rp.{totalPrice.toFixed(2)}
               </TableCell>
               {/* Render edit and delete buttons */}
               <TableCell className="text-right">
