@@ -11,7 +11,7 @@ import { WizardData } from '../CustomOrderWizard';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ReloadIcon } from '@radix-ui/react-icons';
-import jsPDF from 'jspdf';
+import { generatePDF } from '@/lib/pdfGenerator';
 
 interface ReviewStepProps {
   data: WizardData;
@@ -87,148 +87,11 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
     }
   };
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const margin = 10;
-    let currentY = 30;
-
-    // Header - Company Info
-    doc.setFontSize(20);
-    doc.setFont('', 'bold');
-    doc.text('PESONA RESTAURANT AND ROOM', pageWidth / 2, currentY, { align: 'center' });
-    
-    currentY += 7;
-    doc.setFontSize(10);
-    doc.setFont('', 'normal');
-    doc.text('Jl. Soekarno Hatta', pageWidth / 2, currentY, { align: 'center' });
-    
-    currentY += 7;
-    doc.text('Labuan Bajo, Manggarai Barat satu', pageWidth / 2, currentY, { align: 'center' });
-    
-    currentY += 7;
-    doc.text('Phone: 082145250266', pageWidth / 2, currentY, { align: 'center' });
-    
-    currentY += 7;
-    doc.text('Email: hallpesona@gmail.com', pageWidth / 2, currentY, { align: 'center' });
-
-    currentY += 15;
-
-    // Invoice Header
-    doc.setFontSize(12);
-    doc.setFont('', 'bold');
-    
-    // Right side - Invoice details
-    const rightX = pageWidth - margin - 60;
-    doc.setFillColor(0, 0, 0);
-    doc.rect(rightX, currentY, 60, 8, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.text('INVOICE #', rightX + 2, currentY + 6);
-    doc.text('DATE', rightX + 35, currentY + 6);
-    
-    currentY += 8;
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('', 'normal');
-    doc.text(Date.now().toString().slice(-6), rightX + 2, currentY + 6);
-    doc.text(new Date().toLocaleDateString(), rightX + 35, currentY + 6);
-
-    // Bill To Section
-    doc.setFillColor(0, 0, 0);
-    doc.rect(margin, currentY, 60, 8, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFont('', 'bold');
-    doc.text('BILL TO : ', margin + 2, currentY + 6);
-
-    currentY += 15;
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('', 'normal');
-    doc.text(`Guest Name: ${data.customerName || 'N/A'}`, margin, currentY);
-    
-    currentY += 10;
-    doc.text(`Cashier: ${data.cashierName}`, margin, currentY);
-    
-    currentY += 10;
-    doc.text(`Service Type: ${data.serviceType.charAt(0).toUpperCase() + data.serviceType.slice(1)}`, margin, currentY);
-
-    // Service details on right
-    const serviceDetailsY = currentY - 20;
-    doc.setFillColor(0, 0, 0);
-    doc.rect(rightX, serviceDetailsY, 60, 8, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFont('', 'bold');
-    doc.text('Room No:', rightX + 2, serviceDetailsY + 6);
-    doc.text('Res. No:', rightX + 35, serviceDetailsY + 6);
-
-    currentY += 20;
-
-    // Items Table Header
-    doc.setFillColor(0, 0, 0);
-    doc.rect(margin, currentY, pageWidth - 2 * margin, 8, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFont('', 'bold');
-    doc.text('Date', margin + 2, currentY + 6);
-    doc.text('Item', margin + 30, currentY + 6);
-    doc.text('Reference', margin + 60, currentY + 6);
-    doc.text('Qty', margin + 100, currentY + 6);
-    doc.text('Price', margin + 120, currentY + 6);
-    doc.text('Amount(IDR)', margin + 150, currentY + 6);
-
-    currentY += 8;
-
-    // Items
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('', 'normal');
-    
-    data.items.forEach((item, index) => {
-      if (currentY > 250) { // New page if needed
-        doc.addPage();
-        currentY = 30;
-      }
-      
-      // Draw row border
-      doc.rect(margin, currentY, pageWidth - 2 * margin, 12);
-      doc.text(item.orderDate, margin + 2, currentY + 8);
-      doc.text(item.itemName, margin + 30, currentY + 8);
-      doc.text(item.reference || '-', margin + 60, currentY + 8);
-      doc.text(item.quantity.toString(), margin + 100, currentY + 8);
-      doc.text(`Rp.${item.price.toFixed(0)}`, margin + 120, currentY + 8);
-      doc.text(`Rp.${(item.price * item.quantity).toFixed(0)}`, margin + 150, currentY + 8);
-      
-      currentY += 12;
+  const handleGeneratePDF = () => {
+    generatePDF({
+      data,
+      calculateTotal
     });
-
-    // Add some empty rows for the table
-    for (let i = 0; i < 1; i++) {
-      doc.rect(margin, currentY, pageWidth - 2 * margin, 12);
-      currentY += 12;
-    }
-
-    currentY += 5;
-
-    // Thank you message
-    doc.text('Thank you for your business!', margin, currentY);
-
-    // Totals section
-    const totalsX = pageWidth - margin - 80;
-    currentY += 5;
-    
-    doc.setFont('', 'bold');
-    doc.text('SUBTOTAL', totalsX, currentY);
-    doc.text(`Rp.${calculateSubtotal().toFixed(0)}`, totalsX + 40, currentY);
-    
-    currentY += 5;
-    doc.text('TOTAL', totalsX, currentY);
-    doc.text(`Rp.${calculateTotal().toFixed(0)}`, totalsX + 40, currentY);
-
-    currentY += 30;
-
-    // Signature section
-    doc.text('Guest Signature', pageWidth - margin - 50, currentY+10);
-    doc.text('Pesona Indah Room & Restaurant', pageWidth - margin - 80, currentY+15);
-
-    // Save the PDF
-    doc.save(`invoice-${Date.now()}.pdf`);
-    toast.success('PDF exported successfully!');
   };
 
   if (orderSubmitted) {
@@ -365,7 +228,7 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
       {/* Download PDF Button */}
       <div className="flex justify-center w-full">
         <Button
-          onClick={generatePDF}
+          onClick={handleGeneratePDF}
           size="lg"
           className="w-full sm:w-auto px-8 max-w-md"
         >
