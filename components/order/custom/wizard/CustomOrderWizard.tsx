@@ -12,7 +12,9 @@ export interface WizardData {
   customerName: string;
   arrival: string;
   departure: string;
-  serviceType: 'food' | 'room' | 'packages' | '';
+  invoice: string;
+  serviceType: 'restaurant' | 'room' | 'packages' | '';
+  paymentMethod: 'app' | 'transfer' | 'card' | 'cash' | '';
   items: {
     id: string;
     itemName: string;
@@ -31,6 +33,8 @@ export default function CustomOrderWizard() {
     customerName: '',
     departure: '',
     arrival: '',
+    paymentMethod: '',
+    invoice: '',
     items: [],
   });
 
@@ -55,7 +59,7 @@ export default function CustomOrderWizard() {
   const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return wizardData.customerName.trim() !== '';
+        return true ;
       case 2:
         return wizardData.items.length > 0;
       case 3:

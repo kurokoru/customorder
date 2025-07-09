@@ -5,7 +5,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { DatePicker } from '@/components/ui/date-picker';
-import { User, Package, Bed, Utensils, Calendar } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { User, Package, Bed, Utensils, Calendar, Smartphone, CreditCard, Banknote, ArrowRightLeft } from 'lucide-react';
 import { WizardData } from '../CustomOrderWizard';
 
 interface CashierServiceStepProps {
@@ -14,14 +15,24 @@ interface CashierServiceStepProps {
 }
 
 const serviceOptions = [
-  { value: 'food', label: 'Food', icon: Utensils, color: 'bg-orange-500' },
+  { value: 'restaurant', label: 'Restaurant', icon: Utensils, color: 'bg-orange-500' },
   { value: 'room', label: 'Room', icon: Bed, color: 'bg-blue-500' },
-  { value: 'packages', label: 'Packages', icon: Package, color: 'bg-green-500' },
+  { value: 'packages', label: 'Room & Restaurant', icon: Package, color: 'bg-green-500' },
+] as const;
+
+
+const paymentOptions = [
+  { value: 'app', label: 'App', icon: Smartphone },
+  { value: 'transfer', label: 'Transfer Bank', icon: ArrowRightLeft },
+  { value: 'card', label: 'Card', icon: CreditCard },
+  { value: 'cash', label: 'Cash', icon: Banknote },
 ] as const;
 
 export default function CashierServiceStep({ data, onUpdate }: CashierServiceStepProps) {
+  const [invoice, setInvoice] = useState(data.invoice || '');
   const [cashierName, setCashierName] = useState(data.cashierName);
   const [serviceType, setServiceType] = useState(data.serviceType);
+  const [paymentMethod, setPaymentMethod] = useState(data.paymentMethod);
   const [customerName, setCustomerName] = useState(data.customerName);
   const [arrivalDate, setArrivalDate] = useState<Date | undefined>(
     data.arrival ? new Date(data.arrival) : undefined
@@ -30,18 +41,61 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
     data.departure ? new Date(data.departure) : undefined
   );
 
-  useEffect(() => {
-    const arrival = arrivalDate ? arrivalDate.toISOString().split('T')[0] : '';
-    const departure = departureDate ? departureDate.toISOString().split('T')[0] : '';
-    onUpdate({ cashierName, serviceType, customerName, arrival, departure });
-  }, [cashierName, serviceType, customerName, arrivalDate, departureDate, onUpdate]);
+  const handleChange = (type: string, value: string ) => {
+    switch (type) {
+      case 'cashierName':
+        setCashierName(value);
+        onUpdate({ cashierName: value });
+        break;
+      case 'customerName':
+        setCustomerName(value);
+        onUpdate({ customerName: value });
+        break;
+      case 'invoice':
+        setInvoice(value);
+        onUpdate({ invoice: value });
+        break;
+      case 'arrivalDate':
+        setArrivalDate(value ? new Date(value) : undefined);
+        onUpdate({ arrival: value });
+        break;
+      case 'departureDate':
+        setDepartureDate(value ? new Date(value) : undefined);
+        onUpdate({ departure: value });
+        break;
+      default:
+        break;
+    }
+  };
 
-  const handleServiceSelect = (service: 'food' | 'room' | 'packages') => {
+  const handleServiceSelect = (service: 'restaurant' | 'room' | 'packages') => {
     setServiceType(service);
+    onUpdate({ serviceType: service });
+  };
+
+  const handlePaymentSelect = (paymentMethod: 'app' | 'transfer' | 'card' | 'cash') => {
+    setPaymentMethod(paymentMethod);
+    onUpdate({ paymentMethod: paymentMethod });
   };
 
   return (
     <div className="space-y-6">
+       {/* Invoice Name Input */}
+      <div className="space-y-2">
+        <Label htmlFor="invoice" className="text-base font-medium flex items-center gap-2">
+          <User className="h-4 w-4" />
+          Invoice
+        </Label>
+        <Input
+          id="invoice"
+          type="text"
+          placeholder="Enter Invoice"
+          value={invoice}
+          onChange={(e) => handleChange('invoice', e.target.value)}
+          className="text-base"
+        />
+      </div>
+ 
       {/* Cashier Name Input */}
       <div className="space-y-2">
         <Label htmlFor="cashierName" className="text-base font-medium flex items-center gap-2">
@@ -53,67 +107,15 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
           type="text"
           placeholder="Enter cashier name"
           value={cashierName}
-          onChange={(e) => setCashierName(e.target.value)}
+          onChange={(e) => handleChange('cashierName', e.target.value)}
           className="text-base"
         />
         {cashierName.trim() === '' && (
           <p className="text-sm text-red-500">Cashier name is required</p>
         )}
       </div>
-        {/* Customer Name Input */}
-      <div className="space-y-2">
-        <Label htmlFor="customerName" className="text-base font-medium flex items-center gap-2">
-          <User className="h-4 w-4" />
-          Customer Name
-        </Label>
-        <Input
-          id="customerName"
-          type="text"
-          placeholder="Enter customer name"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-          className="text-base"
-        />
-        {customerName.trim() === '' && (
-          <p className="text-sm text-red-500">Customer name is required</p>
-        )}
-      </div>
 
-      {/* Arrival Date Input */}
-      <div className="space-y-2">
-        <Label htmlFor="arrival" className="text-base font-medium flex items-center gap-2">
-          <Calendar className="h-4 w-4" />
-          Arrival Date
-        </Label>
-        <DatePicker
-          date={arrivalDate}
-          onDateChange={setArrivalDate}
-          placeholder="Select arrival date"
-          className="w-full"
-        />
-        {!arrivalDate && (
-          <p className="text-sm text-red-500">Arrival date is required</p>
-        )}
-      </div>
-
-      {/* Departure Date Input */}
-      <div className="space-y-2">
-        <Label htmlFor="departure" className="text-base font-medium flex items-center gap-2">
-          <Calendar className="h-4 w-4" />
-          Departure Date
-        </Label>
-        <DatePicker
-          date={departureDate}
-          onDateChange={setDepartureDate}
-          placeholder="Select departure date"
-          className="w-full"
-        />
-        {!departureDate && (
-          <p className="text-sm text-red-500">Departure date is required</p>
-        )}
-      </div>
-
-      {/* Service Type Selection */}
+     {/* Service Type Selection */}
       <div className="space-y-4">
         <Label className="text-base font-medium">Service Type</Label>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -144,20 +146,99 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
             );
           })}
         </div>
-        {serviceType === '' && (
-          <p className="text-sm text-red-500">Please select a service type</p>
+      </div>
+      {/* Customer Name Input */}
+      <div className="space-y-2">
+        <Label htmlFor="customerName" className="text-base font-medium flex items-center gap-2">
+          <User className="h-4 w-4" />
+          Customer Name
+        </Label>
+        <Input
+          id="customerName"
+          type="text"
+          placeholder="Enter customer name"
+          value={customerName}
+          onChange={(e) => handleChange('customerName', e.target.value)}
+          className="text-base"
+        />
+        {customerName.trim() === '' && (
+          <p className="text-sm text-red-500">Customer name is required</p>
+        )}
+      </div>
+
+      {/* Arrival Date Input */}
+      <div className="space-y-2">
+        <Label htmlFor="arrival" className="text-base font-medium flex items-center gap-2">
+          <Calendar className="h-4 w-4" />
+          Arrival Date
+        </Label>
+        <DatePicker
+          date={arrivalDate}
+          onDateChange={(date) => handleChange('arrivalDate', date ? date.toISOString() : '')}
+          placeholder="Select arrival date"
+          className="w-full"
+        />
+        {!arrivalDate && (
+          <p className="text-sm text-red-500">Arrival date is required</p>
+        )}
+      </div>
+
+      {/* Departure Date Input */}
+      <div className="space-y-2">
+        <Label htmlFor="departure" className="text-base font-medium flex items-center gap-2">
+          <Calendar className="h-4 w-4" />
+          Departure Date
+        </Label>
+        <DatePicker
+          date={departureDate}
+          onDateChange={(date) => handleChange('departureDate', date ? date.toISOString() : '')}
+          placeholder="Select departure date"
+          className="w-full"
+        />
+        {!departureDate && (
+          <p className="text-sm text-red-500">Departure date is required</p>
+        )}
+      </div>
+    
+      <div className="space-y-2">
+        <Label htmlFor="paymentType" className="text-base font-medium flex items-center gap-2">
+          <CreditCard className="h-4 w-4" />
+          Payment Method
+        </Label>
+        <Select value={paymentMethod} onValueChange={handlePaymentSelect}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select payment method" />
+          </SelectTrigger>
+          <SelectContent>
+            {paymentOptions.map((option) => {
+              const IconComponent = option.icon;
+              return (
+                <SelectItem key={option.value} value={option.value}>
+                  <div className="flex items-center gap-2">
+                    <IconComponent className="h-4 w-4" />
+                    {option.label}
+                  </div>
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
+        {paymentMethod.trim() === '' && (
+          <p className="text-sm text-red-500">Please select a payment method</p>
         )}
       </div>
 
       {/* Summary */}
-      {cashierName.trim() !== '' && serviceType !== '' && (
+      {cashierName.trim() !== '' && serviceType.trim() !== '' && paymentMethod.trim() !== '' && (
         <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <h3 className="font-semibold mb-2">Summary</h3>
+          <p><strong>Invoice:</strong> {invoice}</p>
           <p><strong>Cashier:</strong> {cashierName}</p>
           <p><strong>Customer:</strong> {customerName}</p>
           {arrivalDate && <p><strong>Arrival:</strong> {arrivalDate.toLocaleDateString()}</p>}
           {departureDate && <p><strong>Departure:</strong> {departureDate.toLocaleDateString()}</p>}
           <p><strong>Service:</strong> {serviceOptions.find(s => s.value === serviceType)?.label}</p>
+          <p><strong>Payment:</strong> {paymentOptions.find(p => p.value === paymentMethod)?.label}</p>
         </div>
       )}
     </div>

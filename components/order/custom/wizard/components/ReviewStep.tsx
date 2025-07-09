@@ -25,7 +25,7 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
 
   const getServiceIcon = () => {
     switch (data.serviceType) {
-      case 'food':
+      case 'restaurant':
         return <Utensils className="h-4 w-4" />;
       case 'room':
         return <Bed className="h-4 w-4" />;
