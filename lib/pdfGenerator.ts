@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 interface OrderItem {
   id: string;
@@ -186,7 +186,7 @@ function addItemsAutoTable() {
     'Rp ' + calculateTotal(data).toLocaleString('id-ID')
   ]);
 
-   (doc as any).autoTable({
+   autoTable(doc, {
     startY: currentY,
     head: [['Date', 'Description', 'Reference', 'QTY', 'Amount (IDR)', 'Total (IDR)']],
     body: tableData,
@@ -265,6 +265,10 @@ function addItemsAutoTable() {
   
   // Update currentY to position after table
   currentY = (doc as any).lastAutoTable.finalY + 20;
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Thank you for stay with us! Comeback soon …', pageWidth - margin - 170, currentY - 10);
+  
 }
 
 
@@ -274,10 +278,6 @@ function addSignatureAndPaid() {
   var signatureY = pageHeight - 40; // Position near bottom
   
   // Add signature on bottom right
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'normal');
-  doc.text('Thank you for stay with us! Comeback soon …', pageWidth - margin - 170, signatureY - 50);
-  
   signatureY += 15;
   doc.setFont('helvetica', 'bold');
   doc.text('Signature,', pageWidth - margin - 80, signatureY+3);
@@ -290,7 +290,7 @@ function addSignatureAndPaid() {
   
   // Add PAID image instead of text
   var paidX = pageWidth - margin - 70;
-  var paidY = signatureY - 40;
+  var paidY = signatureY - 20;
   var paidWidth = 40;
   var paidHeight = 15;
   
