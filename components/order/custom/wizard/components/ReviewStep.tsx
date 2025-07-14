@@ -6,12 +6,13 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CheckCircle, User, Coffee, Bed, Utensils, Receipt, Download } from 'lucide-react';
-import { WizardData } from '../CustomOrderWizard';
+import { CheckCircle, User, Coffee, Bed, Utensils, Receipt, Download, Package } from 'lucide-react';
+import { WizardData, ServiceOptions } from '../CustomOrderWizard';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { generatePDF } from '@/lib/pdfGenerator';
+import { formatCurrency } from '@/lib/currency'
 
 interface ReviewStepProps {
   data: WizardData;
@@ -30,22 +31,32 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
       case 'room':
         return <Bed className="h-4 w-4" />;
       case 'packages':
-        return <Coffee className="h-4 w-4" />;
+        return <Package className="h-4 w-4" />;
       default:
         return null;
     }
   };
 
   const calculateSubtotal = () => {
-    return data.items.reduce((total, item) => total + item.price * item.quantity, 0);
+    const subtotal = data.items.reduce((total, item) => total + item.price * item.quantity, 0);
+    
+    return formatCurrency(subtotal, '');
   };
 
-  const calculateTax = () => {
-    return (calculateSubtotal() * taxRate) / 100;
-  };
+  const calculateBalance = () => {
+    const subtotal = data.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const balance = subtotal - data.downPayment;
+    return formatCurrency(balance, '');
+};
+
+  // const calculateTax = () => {
+  //   return (calculateSubtotal() * taxRate) / 100;
+  // };
 
   const calculateTotal = () => {
-    return calculateSubtotal() + calculateTax();
+    const subtotal = data.items.reduce((total, item) => total + item.price * item.quantity, 0);
+    // let total = subtotal + calculateTax();
+    return formatCurrency(subtotal, '');
   };
 
   const submitOrder = async () => {
@@ -90,7 +101,8 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
   const handleGeneratePDF = () => {
     generatePDF({
       data,
-      calculateTotal
+      calculateTotal,
+      calculateBalance,
     });
   };
 
@@ -138,7 +150,7 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
               {getServiceIcon()}
               <span className="font-medium truncate">Service:</span>
               <Badge variant="outline" className="capitalize truncate max-w-[120px]">
-                {data.serviceType}
+                {ServiceOptions.find(s => s.value === data.serviceType)?.label}
               </Badge>
             </div>
           </div>
@@ -155,12 +167,12 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
                     <span className="font-medium break-words max-w-[120px]">{item.orderDate} </span>
                     <span className="font-medium break-words max-w-[120px]">{item.itemName} </span>
                     <span className="font-medium break-words max-w-[120px]">{item.reference} </span>
-                    <span className="text-muted-foreground ml-0 sm:ml-2 break-words max-w-[120px]">
-                      Rp.{item.price.toFixed(2)} × {item.quantity}
+                    <span className="text-muted-foreground ml-0 sm:ml-2 break-words max-w-[180px]">
+                      {formatCurrency(item.price, '')} × {item.quantity}
                     </span>
                   </div>
                   <span className="font-medium sm:text-right w-full sm:w-auto break-words max-w-[120px]">
-                    Rp.{(item.price * item.quantity).toFixed(2)}
+                    {formatCurrency((item.price * item.quantity), '')}
                   </span>
                 </div>
               ))}
@@ -170,7 +182,7 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
           <Separator />
 
           {/* Tax Rate Input */}
-          <div className="space-y-2 max-w-xs w-full">
+          {/* <div className="space-y-2 max-w-xs w-full">
             <Label htmlFor="taxRate">Tax Rate (%)</Label>
             <Input
               id="taxRate"
@@ -182,29 +194,29 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
               onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
               className="w-full"
             />
-          </div>
+          </div> */}
 
           {/* Price Breakdown */}
           <div className="space-y-2 pt-4">
             <div className="flex justify-between text-sm sm:text-base">
               <span>Subtotal:</span>
-              <span>${calculateSubtotal().toFixed(2)}</span>
+              <span>{calculateSubtotal()}</span>
             </div>
-            <div className="flex justify-between text-sm sm:text-base">
+            {/* <div className="flex justify-between text-sm sm:text-base">
               <span>Tax ({taxRate}%):</span>
-              <span>${calculateTax().toFixed(2)}</span>
-            </div>
+              <span>{calculateTax().toFixed(2)}</span>
+            </div> */}
             <Separator />
             <div className="flex justify-between text-lg font-bold">
               <span>Total:</span>
-              <span>${calculateTotal().toFixed(2)}</span>
+              <span>{calculateTotal()}</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row justify-center gap-4 w-full">
+      {/* <div className="flex flex-col sm:flex-row justify-center gap-4 w-full">
         <Button
           onClick={submitOrder}
           disabled={isSubmitting || data.items.length === 0}
@@ -223,7 +235,7 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
             </>
           )}
         </Button>
-      </div>
+      </div> */}
 
       {/* Download PDF Button */}
       <div className="flex justify-center w-full">
@@ -245,7 +257,7 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
         <CardContent className="text-sm space-y-2">
           <p><strong>Total Items:</strong> {data.items.length}</p>
           <p><strong>Total Quantity:</strong> {data.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
-          <p><strong>Service Type:</strong> {data.serviceType.charAt(0).toUpperCase() + data.serviceType.slice(1)}</p>
+          <p><strong>Service Type:</strong> {ServiceOptions.find(s => s.value === data.serviceType)?.label}</p>
           <p><strong>Processed By:</strong> {data.cashierName}</p>
         </CardContent>
       </Card>

@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Package, Bed, Utensils} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import CashierServiceStep from './components/CashierServiceStep';
@@ -15,6 +16,7 @@ export interface WizardData {
   invoice: string;
   serviceType: 'restaurant' | 'room' | 'packages' | '';
   paymentMethod: 'app' | 'transfer' | 'card' | 'cash' | '';
+  downPayment: number;
   items: {
     id: string;
     itemName: string;
@@ -24,6 +26,14 @@ export interface WizardData {
     orderDate: string;
   }[];
 }
+
+
+export const ServiceOptions = [
+  { value: 'restaurant', label: 'Restaurant', icon: Utensils, color: 'bg-orange-500' },
+  { value: 'room', label: 'Room', icon: Bed, color: 'bg-blue-500' },
+  { value: 'packages', label: 'Room & Restaurant', icon: Package, color: 'bg-green-500' },
+] as const;
+
 
 export default function CustomOrderWizard() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -35,6 +45,7 @@ export default function CustomOrderWizard() {
     arrival: '',
     paymentMethod: '',
     invoice: '',
+    downPayment: 0,
     items: [],
   });
 

@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import Rupiah from './rupiah';
 
 interface OrderItem {
   id: string;
@@ -18,22 +19,31 @@ interface WizardData {
   invoice: string;
   serviceType: string;
   paymentMethod: string;
+  downPayment: number;
   items: OrderItem[];
 }
 
 interface PDFGeneratorOptions {
   data: WizardData;
-  calculateTotal: (data: WizardData) => number;
+  calculateTotal: (data: WizardData) => string;
+  calculateBalance: (data: WizardData) => string;
 }
 
 // Helper function to calculate total for dummy data
-export const calculateTotal = (data: WizardData): number => {
+export const calculateTotal = (data: WizardData): string => {
   const subtotal = data.items.reduce((total, item) => total + (item.price * item.quantity), 0);
-  const tax = subtotal * 0.1; // 10% tax
-  return subtotal + tax;
+  let rupiah = new Rupiah(subtotal);
+  return rupiah.format;
 };
 
-export const generatePDF = ({ data, calculateTotal }: PDFGeneratorOptions) => {
+export const calculateBalance = (data: WizardData): string => {
+  const subtotal = data.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const balance = subtotal - data.downPayment;
+  let rupiah = new Rupiah(balance);
+  return rupiah.format; 
+};
+
+export const generatePDF = ({ data, calculateTotal, calculateBalance }: PDFGeneratorOptions) => {
   const doc = new jsPDF();
   // applyPlugin(jsPDF);
 
@@ -158,33 +168,32 @@ function addItemsAutoTable() {
   }
   
 
-   // Add total row
-  tableData.push([
-    'Down Payment',
-    '',
-    '',
-    '',
-    '',
-    'Rp.' + calculateTotal(data).toLocaleString('id-ID')
-  ]);
-     // Add total row
-  tableData.push([
-    'Balance',
-    '',
-       '',
-    '',
-    '',
-    'Rp ' + calculateTotal(data).toLocaleString('id-ID')
-  ]);
-  // Add total row
   tableData.push([
     'Total Amount',
     '',
        '',
     '',
     '',
-    'Rp ' + calculateTotal(data).toLocaleString('id-ID')
+    calculateTotal(data)
   ]);
+  tableData.push([
+    'Balance',
+    '',
+       '',
+    '',
+    '',
+    calculateBalance(data)
+  ]);
+  let dp = new Rupiah(data.downPayment);
+  tableData.push([
+    'Down Payment',
+    '',
+    '',
+    '',
+    '',
+   dp.format
+  ]);
+
 
    autoTable(doc, {
     startY: currentY,

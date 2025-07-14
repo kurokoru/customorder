@@ -7,8 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { User, Package, Bed, Utensils, Calendar, Smartphone, CreditCard, Banknote, ArrowRightLeft } from 'lucide-react';
-import { WizardData } from '../CustomOrderWizard';
-
+import { WizardData, ServiceOptions } from '../CustomOrderWizard';
+import { formatCurrency } from '@/lib/currency'; 
 interface CashierServiceStepProps {
   data: WizardData;
   onUpdate: (data: Partial<WizardData>) => void;
@@ -34,13 +34,14 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
   const [serviceType, setServiceType] = useState(data.serviceType);
   const [paymentMethod, setPaymentMethod] = useState(data.paymentMethod);
   const [customerName, setCustomerName] = useState(data.customerName);
+  const [downPayment, setDownPayment] = useState(data.downPayment || 0);
   const [arrivalDate, setArrivalDate] = useState<Date | undefined>(
     data.arrival ? new Date(data.arrival) : undefined
   );
   const [departureDate, setDepartureDate] = useState<Date | undefined>(
     data.departure ? new Date(data.departure) : undefined
   );
-
+ const [departureError, setDepartureError] = useState<string>('');
   const handleChange = (type: string, value: string ) => {
     switch (type) {
       case 'cashierName':
@@ -62,6 +63,10 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
       case 'departureDate':
         setDepartureDate(value ? new Date(value) : undefined);
         onUpdate({ departure: value });
+        break;
+       case 'downPayment':
+        setDownPayment(+value);
+        onUpdate({ downPayment: +value });
         break;
       default:
         break;
@@ -191,13 +196,27 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
         </Label>
         <DatePicker
           date={departureDate}
-          onDateChange={(date) => handleChange('departureDate', date ? date.toISOString() : '')}
+           // Prevent selecting a date before arrivalDate
+          // minDate={arrivalDate}
+          onDateChange={(date) => {
+            if (arrivalDate && date && date < arrivalDate) {
+              setDepartureError('Departure date cannot be before arrival date');
+              return;
+            }
+            setDepartureError('');
+            console.log(date)
+            handleChange('departureDate', date ? date.toISOString() : '')
+          }}
+          // onDateChange={(date) => handleChange('departureDate', date ? date.toISOString() : '')}
           placeholder="Select departure date"
           className="w-full"
         />
-        {!departureDate && (
+        {departureError ? (
+          <p className="text-sm text-red-500">{departureError}</p>
+         ) : !departureDate && (
           <p className="text-sm text-red-500">Departure date is required</p>
-        )}
+         )}
+        
       </div>
     
       <div className="space-y-2">
@@ -228,6 +247,21 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
         )}
       </div>
 
+      <div className="space-y-2">
+        <Label htmlFor="downPayment" className="text-base font-medium flex items-center gap-2">
+          <CreditCard className="h-4 w-4" />
+          Down Payment 
+        </Label>
+        <Input
+          id="downPayment"
+          type="text"
+          placeholder="Down Payment(IDR)"
+          value={downPayment}
+          onChange={(e) => handleChange('downPayment', e.target.value)}
+          className="text-base"
+        />
+      </div>
+
       {/* Summary */}
       {cashierName.trim() !== '' && serviceType.trim() !== '' && paymentMethod.trim() !== '' && (
         <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -239,6 +273,7 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
           {departureDate && <p><strong>Departure:</strong> {departureDate.toLocaleDateString()}</p>}
           <p><strong>Service:</strong> {serviceOptions.find(s => s.value === serviceType)?.label}</p>
           <p><strong>Payment:</strong> {paymentOptions.find(p => p.value === paymentMethod)?.label}</p>
+          <p><strong>Down Payment:</strong> {formatCurrency(downPayment, '')}</p>
         </div>
       )}
     </div>

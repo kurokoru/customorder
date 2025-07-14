@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Minus, Trash2, Edit3,Calendar } from 'lucide-react';
-import { WizardData } from '../CustomOrderWizard';
+import { WizardData, ServiceOptions } from '../CustomOrderWizard';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DatePicker } from '@/components/ui/date-picker';
 
@@ -133,10 +133,13 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
       {/* Service Type Badge */}
       <div className="flex items-center gap-2">
         <Badge variant="outline" className="text-sm">
-          Service: {data.serviceType.charAt(0).toUpperCase() + data.serviceType.slice(1)}
+          Service: {ServiceOptions.find(s => s.value === data.serviceType)?.label}
         </Badge>
         <Badge variant="outline" className="text-sm">
           Cashier: {data.cashierName}
+        </Badge>
+          <Badge variant="outline" className="text-sm">
+          Arrival Date: {data.arrival}
         </Badge>
       </div>
 
