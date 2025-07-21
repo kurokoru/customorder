@@ -189,6 +189,22 @@ const data = {
     }
   ]
 };
+
+function formatDateToDDMMYYYY(dateString) {
+  if (!dateString) return '';
+  
+  try {
+    var date = new Date(dateString);
+    var day = date.getDate().toString().padStart(2, '0');
+    var month = (date.getMonth() + 1).toString().padStart(2, '0');
+    var year = date.getFullYear();
+    
+    return day + '/' + month + '/' + year;
+  } catch (error) {
+    return dateString; // Return original string if parsing fails
+  }
+}
+
 function calculateTotal(data) {
   var subtotal = 0;
   for (var i = 0; i < data.items.length; i++) {
@@ -337,7 +353,7 @@ function addItemsTable() {
     doc.rect(margin, currentY, tableWidth, itemRowHeight);
     
     var orderDate = item.orderDate ? 
-      new Date(item.orderDate).toLocaleDateString('id-ID') : '';
+      formatDateToDDMMYYYY(item.orderDate) : '';
     
     // Add item data to table
     doc.text(orderDate, colPositions[0] + 1, currentY + 5, { 
@@ -422,7 +438,7 @@ function addItemsAutoTable() {
   for (var i = 0; i < data.items.length; i++) {
     var item = data.items[i];
     var orderDate = item.orderDate ? 
-      new Date(item.orderDate).toLocaleDateString('id-ID') : '';
+      formatDateToDDMMYYYY(item.orderDate) : '';
     
     tableData.push([
       orderDate,

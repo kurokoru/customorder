@@ -12,7 +12,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { generatePDF } from '@/lib/pdfGenerator';
-import { formatCurrency } from '@/lib/currency'
+import { formatCurrency } from '@/lib/currency';
+import { formatDateToDDMMYYYY } from '@/lib/utils';
 
 interface ReviewStepProps {
   data: WizardData;
@@ -164,9 +165,9 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
               {data.items.map((item, index) => (
                 <div key={item.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 gap-2 sm:gap-0 border-b last:border-b-0 min-w-0">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 w-full min-w-0">
-                    <span className="font-medium break-words max-w-[120px]">{item.orderDate} </span>
-                    <span className="font-medium break-words max-w-[120px]">{item.itemName} </span>
-                    <span className="font-medium break-words max-w-[120px]">{item.reference} </span>
+                    <span className="font-medium break-words max-w-[120px]">{formatDateToDDMMYYYY(item.orderDate)} </span>
+                    <span className="font-medium break-words max-w-[300px]">{item.itemName} </span>
+                    <span className="font-medium break-words max-w-[600px]">{item.reference} </span>
                     <span className="text-muted-foreground ml-0 sm:ml-2 break-words max-w-[180px]">
                       {formatCurrency(item.price, '')} × {item.quantity}
                     </span>

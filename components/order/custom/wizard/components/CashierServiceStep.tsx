@@ -29,7 +29,16 @@ const paymentOptions = [
 ] as const;
 
 export default function CashierServiceStep({ data, onUpdate }: CashierServiceStepProps) {
-  const [invoice, setInvoice] = useState(data.invoice || '');
+  // Generate formatted invoice if not provided
+  const generateFormattedInvoice = () => {
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    const incrementNumber = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+    return `${incrementNumber}/INVOICE/${month}/${year}`;
+  };
+
+  const [invoice, setInvoice] = useState(data.invoice || generateFormattedInvoice());
   const [cashierName, setCashierName] = useState(data.cashierName);
   const [serviceType, setServiceType] = useState(data.serviceType);
   const [paymentMethod, setPaymentMethod] = useState(data.paymentMethod);
@@ -53,8 +62,9 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
         onUpdate({ customerName: value });
         break;
       case 'invoice':
-        setInvoice(value);
-        onUpdate({ invoice: value });
+        const invoiceValue = value.trim() === '' ? generateFormattedInvoice() : value;
+        setInvoice(invoiceValue);
+        onUpdate({ invoice: invoiceValue });
         break;
       case 'arrivalDate':
         setArrivalDate(value ? new Date(value) : undefined);
@@ -94,11 +104,14 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
         <Input
           id="invoice"
           type="text"
-          placeholder="Enter Invoice"
+          placeholder="Format: 0001/INVOICE/MM/YYYY"
           value={invoice}
           onChange={(e) => handleChange('invoice', e.target.value)}
           className="text-base"
         />
+        <p className="text-xs text-gray-500">
+          Format: {generateFormattedInvoice().split('/')[0]}/INVOICE/MM/YYYY
+        </p>
       </div>
  
       {/* Cashier Name Input */}
@@ -204,7 +217,6 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
               return;
             }
             setDepartureError('');
-            console.log(date)
             handleChange('departureDate', date ? date.toISOString() : '')
           }}
           // onDateChange={(date) => handleChange('departureDate', date ? date.toISOString() : '')}
@@ -224,7 +236,7 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
           <CreditCard className="h-4 w-4" />
           Payment Method
         </Label>
-        <Select value={paymentMethod} onValueChange={handlePaymentSelect}>
+        <Select value={paymentMethod} onValueChange={handlePaymentSelect} >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select payment method" />
           </SelectTrigger>

@@ -10,6 +10,8 @@ import { Plus, Minus, Trash2, Edit3,Calendar } from 'lucide-react';
 import { WizardData, ServiceOptions } from '../CustomOrderWizard';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DatePicker } from '@/components/ui/date-picker';
+import { formatDateToDDMMYYYY } from '@/lib/utils';
+import Rupiah from '@/lib/rupiah';
 
 interface ItemsStepProps {
   data: WizardData;
@@ -26,7 +28,7 @@ interface NewItem {
 
 export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   const [newItem, setNewItem] = useState<NewItem>({
-    orderDate: '',
+    orderDate: data.arrival || '',
     itemName: '',
     price: '',
     reference: '',
@@ -35,7 +37,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   const [editingItem, setEditingItem] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [orderDate, setOrderDate] = useState<Date | undefined>(undefined);
+  const [orderDate, setOrderDate] = useState<Date | undefined>(data.arrival ? new Date(data.arrival) : undefined);
   const validateItem = (item: NewItem): boolean => {
     const newErrors: { [key: string]: string } = {};
 
@@ -80,11 +82,17 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
     }
 
     onUpdate({ items: updatedItems });
-    setNewItem({ itemName: '', price: '', quantity: 1, reference: '', orderDate: '' });
+    setNewItem({ 
+      itemName: '', 
+      price: '', 
+      quantity: 1, 
+      reference: '', 
+      orderDate: data.arrival || '' 
+    });
     setEditingItem(null);
     setIsDialogOpen(false);
     setErrors({});
-    setOrderDate(undefined);
+    setOrderDate(data.arrival ? new Date(data.arrival) : undefined);
   };
 
   const removeItem = (id: string) => {
@@ -122,10 +130,17 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   };
 
   const resetForm = () => {
-    setNewItem({ itemName: '', price: '', quantity: 1, reference: '', orderDate: '' });
+    const defaultOrderDate = data.arrival || '';
+    setNewItem({ 
+      itemName: '', 
+      price: '', 
+      quantity: 1, 
+      reference: '', 
+      orderDate: defaultOrderDate 
+    });
     setEditingItem(null);
     setErrors({});
-    setOrderDate(undefined);
+    setOrderDate(defaultOrderDate ? new Date(defaultOrderDate) : undefined);
   };
 
   return (
@@ -139,7 +154,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
           Cashier: {data.cashierName}
         </Badge>
           <Badge variant="outline" className="text-sm">
-          Arrival Date: {data.arrival}
+          Arrival Date: {formatDateToDDMMYYYY(data.arrival)}
         </Badge>
       </div>
 
@@ -281,9 +296,9 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                       <TableCell className="font-medium">{item.itemName}</TableCell>
                       <TableCell className="font-medium">{item.reference}</TableCell>
                       <TableCell className="text-sm">
-                        {item.orderDate ? new Date(item.orderDate).toLocaleDateString() : 'No date'}
+                        {item.orderDate ? formatDateToDDMMYYYY(item.orderDate) : 'No date'}
                       </TableCell>
-                      <TableCell>Rp.{item.price.toFixed(2)}</TableCell>
+                      <TableCell>{new Rupiah(item.price).format}</TableCell>
                       <TableCell>
                         <div className="flex items-center">
                           <Button
@@ -303,7 +318,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                           </Button>
                         </div>
                       </TableCell>
-                      <TableCell>Rp.{(item.price * item.quantity).toFixed(2)}</TableCell>
+                      <TableCell>{new Rupiah(item.price * item.quantity).format}</TableCell>
                       <TableCell>
                         <div className="flex gap-1">
                           <Button
@@ -333,12 +348,12 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
                 <div key={item.id} className="border rounded-lg p-4 flex flex-col gap-2 bg-muted/50">
                   <div className="flex justify-between">
                     <span className="font-semibold">{item.itemName}</span>
-                    <span className="font-semibold">Rp.{(item.price * item.quantity).toFixed(2)}</span>
+                    <span className="font-semibold">{new Rupiah(item.price * item.quantity).format}</span>
                   </div>
                   <div className="text-sm text-muted-foreground">{item.reference}</div>
                   <div className="flex flex-wrap gap-2 text-sm">
-                    <span>Order Date: {item.orderDate ? new Date(item.orderDate).toLocaleDateString() : 'No date'}</span>
-                    <span>Price: Rp.{item.price.toFixed(2)}</span>
+                    <span>Order Date: {item.orderDate ? formatDateToDDMMYYYY(item.orderDate) : 'No date'}</span>
+                    <span>Price: {new Rupiah(item.price).format}</span>
                     <span>Qty: {item.quantity}</span>
                   </div>
                   <div className="flex gap-2 mt-2">
@@ -378,7 +393,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
             <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <div className="flex justify-between items-center text-lg font-semibold">
                 <span>Total:</span>
-                <span>Rp.{calculateTotal().toFixed(2)}</span>
+                <span>{new Rupiah(calculateTotal()).format}</span>
               </div>
             </div>
           </CardContent>

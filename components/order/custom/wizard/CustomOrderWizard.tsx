@@ -70,7 +70,15 @@ export default function CustomOrderWizard() {
   const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return true ;
+        return (
+          wizardData.cashierName.trim() !== '' &&
+          wizardData.customerName.trim() !== '' &&
+          wizardData.serviceType !== '' &&
+          wizardData.paymentMethod !== '' &&
+          wizardData.arrival !== '' &&
+          wizardData.departure !== '' &&
+          wizardData.invoice.trim() !== ''
+        );
       case 2:
         return wizardData.items.length > 0;
       case 3:

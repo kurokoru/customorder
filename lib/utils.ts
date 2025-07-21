@@ -40,3 +40,18 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
 
   return pagination;
 };
+
+export const formatDateToDDMMYYYY = (dateString: string): string => {
+  if (!dateString) return '';
+  
+  try {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    
+    return `${day}/${month}/${year}`;
+  } catch (error) {
+    return dateString; // Return original string if parsing fails
+  }
+};
