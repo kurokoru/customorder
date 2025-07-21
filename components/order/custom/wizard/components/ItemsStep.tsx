@@ -38,6 +38,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [orderDate, setOrderDate] = useState<Date | undefined>(data.arrival ? new Date(data.arrival) : undefined);
+  const [priceFocused, setPriceFocused] = useState(false);
   const validateItem = (item: NewItem): boolean => {
     const newErrors: { [key: string]: string } = {};
 
@@ -93,6 +94,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
     setIsDialogOpen(false);
     setErrors({});
     setOrderDate(data.arrival ? new Date(data.arrival) : undefined);
+    setPriceFocused(false);
   };
 
   const removeItem = (id: string) => {
@@ -141,6 +143,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
     setEditingItem(null);
     setErrors({});
     setOrderDate(defaultOrderDate ? new Date(defaultOrderDate) : undefined);
+    setPriceFocused(false);
   };
 
   return (
@@ -253,12 +256,17 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
               <Label htmlFor="price">Price</Label>
               <Input
                 id="price"
-                type="number"
+                type="text"
                 step="0"
                 min="0"
-                value={newItem.price}
-                onChange={(e) => setNewItem({ ...newItem, price: e.target.value })}
-                placeholder="1000.00"
+                value={priceFocused ? newItem.price : (newItem.price ? new Rupiah(parseFloat(newItem.price) || 0).format : '')}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/[^\d]/g, ''); // Remove non-numeric characters
+                  setNewItem({ ...newItem, price: value });
+                }}
+                onFocus={() => setPriceFocused(true)}
+                onBlur={() => setPriceFocused(false)}
+                placeholder="1000"
               />
               {errors.price && <p className="text-sm text-red-500">{errors.price}</p>}
             </div>

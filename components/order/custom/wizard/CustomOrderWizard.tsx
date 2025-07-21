@@ -76,8 +76,7 @@ export default function CustomOrderWizard() {
           wizardData.serviceType !== '' &&
           wizardData.paymentMethod !== '' &&
           wizardData.arrival !== '' &&
-          wizardData.departure !== '' &&
-          wizardData.invoice.trim() !== ''
+          wizardData.departure !== '' 
         );
       case 2:
         return wizardData.items.length > 0;

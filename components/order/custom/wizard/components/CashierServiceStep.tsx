@@ -8,7 +8,8 @@ import { DatePicker } from '@/components/ui/date-picker';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { User, Package, Bed, Utensils, Calendar, Smartphone, CreditCard, Banknote, ArrowRightLeft } from 'lucide-react';
 import { WizardData, ServiceOptions } from '../CustomOrderWizard';
-import { formatCurrency } from '@/lib/currency'; 
+import { formatCurrency } from '@/lib/currency';
+import Rupiah from '@/lib/rupiah'; 
 interface CashierServiceStepProps {
   data: WizardData;
   onUpdate: (data: Partial<WizardData>) => void;
@@ -50,7 +51,8 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
   const [departureDate, setDepartureDate] = useState<Date | undefined>(
     data.departure ? new Date(data.departure) : undefined
   );
- const [departureError, setDepartureError] = useState<string>('');
+  const [departureError, setDepartureError] = useState<string>('');
+  const [downPaymentFocused, setDownPaymentFocused] = useState(false);
   const handleChange = (type: string, value: string ) => {
     switch (type) {
       case 'cashierName':
@@ -268,8 +270,13 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
           id="downPayment"
           type="text"
           placeholder="Down Payment(IDR)"
-          value={downPayment}
-          onChange={(e) => handleChange('downPayment', e.target.value)}
+          value={downPaymentFocused ? downPayment.toString() : new Rupiah(downPayment).format}
+          onChange={(e) => {
+            const value = e.target.value.replace(/[^\d]/g, ''); // Remove non-numeric characters
+            handleChange('downPayment', value);
+          }}
+          onFocus={() => setDownPaymentFocused(true)}
+          onBlur={() => setDownPaymentFocused(false)}
           className="text-base"
         />
       </div>

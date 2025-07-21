@@ -14,6 +14,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { generatePDF } from '@/lib/pdfGenerator';
 import { formatCurrency } from '@/lib/currency';
 import { formatDateToDDMMYYYY } from '@/lib/utils';
+import Rupiah from '@/lib/rupiah';
 
 interface ReviewStepProps {
   data: WizardData;
@@ -40,24 +41,18 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
 
   const calculateSubtotal = () => {
     const subtotal = data.items.reduce((total, item) => total + item.price * item.quantity, 0);
-    
-    return formatCurrency(subtotal, '');
+    return new Rupiah(subtotal).format;
   };
 
   const calculateBalance = () => {
     const subtotal = data.items.reduce((total, item) => total + (item.price * item.quantity), 0);
     const balance = subtotal - data.downPayment;
-    return formatCurrency(balance, '');
-};
-
-  // const calculateTax = () => {
-  //   return (calculateSubtotal() * taxRate) / 100;
-  // };
+    return new Rupiah(balance).format;
+  };
 
   const calculateTotal = () => {
     const subtotal = data.items.reduce((total, item) => total + item.price * item.quantity, 0);
-    // let total = subtotal + calculateTax();
-    return formatCurrency(subtotal, '');
+    return new Rupiah(subtotal).format;
   };
 
   const submitOrder = async () => {
@@ -203,14 +198,18 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
               <span>Subtotal:</span>
               <span>{calculateSubtotal()}</span>
             </div>
-            {/* <div className="flex justify-between text-sm sm:text-base">
-              <span>Tax ({taxRate}%):</span>
-              <span>{calculateTax().toFixed(2)}</span>
-            </div> */}
+            <div className="flex justify-between text-sm sm:text-base">
+              <span>Down Payment:</span>
+              <span>{new Rupiah(data.downPayment).format}</span>
+            </div>
             <Separator />
             <div className="flex justify-between text-lg font-bold">
               <span>Total:</span>
               <span>{calculateTotal()}</span>
+            </div>
+            <div className="flex justify-between text-lg font-bold text-blue-600">
+              <span>Balance Due:</span>
+              <span>{calculateBalance()}</span>
             </div>
           </div>
         </CardContent>
