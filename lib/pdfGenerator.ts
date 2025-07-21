@@ -53,7 +53,7 @@ export const generatePDF = ({ data, calculateTotal, calculateBalance }: PDFGener
 
   // Helper function to add company header
   function addCompanyHeader() {
-  var paidX = pageWidth / 2 + 25;
+  var paidX = pageWidth / 2 + 30;
   var paidY = currentY - 40;
   var paidWidth = 40;
   var paidHeight = 35;
@@ -65,10 +65,10 @@ export const generatePDF = ({ data, calculateTotal, calculateBalance }: PDFGener
   doc.addImage(paidImageData, 'jpeg', paidX, paidY, paidWidth, paidHeight);
  
     // Company name
-  var headerWidth = pageWidth / 2 + 15;
+  var headerWidth = pageWidth / 2 + 10;
   doc.setFontSize(12);
   doc.setFont('helvetica', 'bold');
-  doc.text('PESONA ROOM AND RESTAURANT', headerWidth, currentY, { align: 'left' });
+  doc.text('PESONA BALI ROOM AND RESTAURANT', headerWidth, currentY, { align: 'left' });
   currentY += 5;
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
@@ -93,15 +93,15 @@ export const generatePDF = ({ data, calculateTotal, calculateBalance }: PDFGener
 
 // Helper function to add invoice box
 function addInvoiceBox() {
-  doc.setFontSize(16);
+  doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
   var invoiceText = 'INVOICE';
 
   // Draw box around INVOICE text
-  doc.text(invoiceText, pageWidth / 3 + 15, currentY , { align: 'left' });
-  doc.setFontSize(11);
+  doc.text(invoiceText, pageWidth / 3 + 25, currentY , { align: 'left' });
+  doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text(data.invoice, pageWidth / 3 + 15, currentY + 5, { align: 'left' });
+  doc.text(data.invoice, pageWidth / 3 + 25, currentY + 5, { align: 'left' });
 
   currentY += 10;
 }
@@ -276,7 +276,7 @@ function addItemsAutoTable() {
   currentY = (doc as any).lastAutoTable.finalY + 20;
   doc.setFontSize(11);
   doc.setFont('helvetica', 'normal');
-  doc.text('Thank you for stay with us! Comeback soon …', pageWidth - margin - 170, currentY - 10);
+  doc.text('Thank you very much, we will always hope for your visit back to our place', pageWidth - margin - 170, currentY - 10);
   
 }
 
@@ -289,8 +289,8 @@ function addSignatureAndPaid() {
   // Add signature on bottom right
   signatureY += 15;
   doc.setFont('helvetica', 'bold');
-  doc.text('Signature,', pageWidth - margin - 80, signatureY+3);
-  doc.text('PESONA INDAH HOTEL AND ROOM', pageWidth - margin - 80, signatureY+10);
+  doc.text(data.cashierName, pageWidth - margin - 60, signatureY+3);
+  doc.text('PESONA BALI ROOM AND RESTAURANT', pageWidth - margin - 80, signatureY+10);
   
 
   // Add signature line
@@ -298,10 +298,10 @@ function addSignatureAndPaid() {
   doc.line(pageWidth - margin - 80, signatureY, pageWidth - margin - 10, signatureY);
   
   // Add PAID image instead of text
-  var paidX = pageWidth - margin - 70;
-  var paidY = signatureY - 20;
-  var paidWidth = 40;
-  var paidHeight = 15;
+  var paidX = pageWidth - margin - 80;
+  var paidY = signatureY - 40;
+  var paidWidth = 60;
+  var paidHeight = 30;
   
   var paidImageData = 'data:image/jpeg;base64,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'
 
