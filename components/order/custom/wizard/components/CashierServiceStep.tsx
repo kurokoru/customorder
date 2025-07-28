@@ -30,16 +30,7 @@ const paymentOptions = [
 ] as const;
 
 export default function CashierServiceStep({ data, onUpdate }: CashierServiceStepProps) {
-  // Generate formatted invoice if not provided
-  const generateFormattedInvoice = () => {
-    const today = new Date();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const year = today.getFullYear();
-    const incrementNumber = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
-    return `${incrementNumber}/INVOICE/${month}/${year}`;
-  };
-
-  const [invoice, setInvoice] = useState(data.invoice || generateFormattedInvoice());
+  const [invoice, setInvoice] = useState(data.invoice || '');
   const [cashierName, setCashierName] = useState(data.cashierName);
   const [serviceType, setServiceType] = useState(data.serviceType);
   const [paymentMethod, setPaymentMethod] = useState(data.paymentMethod);
@@ -64,9 +55,8 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
         onUpdate({ customerName: value });
         break;
       case 'invoice':
-        const invoiceValue = value.trim() === '' ? generateFormattedInvoice() : value;
-        setInvoice(invoiceValue);
-        onUpdate({ invoice: invoiceValue });
+        setInvoice(value);
+        onUpdate({ invoice: value });
         break;
       case 'arrivalDate':
         setArrivalDate(value ? new Date(value) : undefined);
@@ -106,13 +96,14 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
         <Input
           id="invoice"
           type="text"
-          placeholder="Format: 0001/INVOICE/MM/YYYY"
+          placeholder="Enter invoice number"
           value={invoice}
           onChange={(e) => handleChange('invoice', e.target.value)}
           className="text-base"
+          required
         />
         <p className="text-xs text-gray-500">
-          Format: {generateFormattedInvoice().split('/')[0]}/INVOICE/MM/YYYY
+          Please enter your invoice number
         </p>
       </div>
  

@@ -76,7 +76,8 @@ export default function CustomOrderWizard() {
           wizardData.serviceType !== '' &&
           wizardData.paymentMethod !== '' &&
           wizardData.arrival !== '' &&
-          wizardData.departure !== '' 
+          wizardData.departure !== ''
+          // Note: Invoice is not required in validation since it auto-generates when blank
         );
       case 2:
         return wizardData.items.length > 0;
