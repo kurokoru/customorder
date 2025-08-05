@@ -181,22 +181,7 @@ function addItemsAutoTable() {
   }
   
 
-  tableData.push([
-    'Total Amount',
-    '',
-       '',
-    '',
-    '',
-    calculateTotal(data)
-  ]);
-  tableData.push([
-    'Balance',
-    '',
-       '',
-    '',
-    '',
-    calculateBalance(data)
-  ]);
+
   let dp = new Rupiah(data.downPayment);
   tableData.push([
     'Down Payment',
@@ -206,7 +191,22 @@ function addItemsAutoTable() {
     '',
    dp.format
   ]);
-
+  tableData.push([
+    'Balance',
+    '',
+       '',
+    '',
+    '',
+    calculateBalance(data)
+  ]);
+  tableData.push([
+    'Total Amount',
+    '',
+       '',
+    '',
+    '',
+    calculateTotal(data)
+  ]);
 
    autoTable(doc, {
     startY: currentY,
