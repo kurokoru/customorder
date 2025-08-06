@@ -15,10 +15,5 @@ export const NAVBAR_ITEMS: NavItem[] = [
     title: 'Order Wizard',
     path: '/orders/custom/wizard',
     icon: <Wand2 className="h-4 w-4" />,
-  },
-  {
-    title: 'Records',
-    path: '/custom-orders/records',
-    icon: <Archive className="h-4 w-4" />,
   }
 ];

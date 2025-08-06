@@ -138,8 +138,8 @@ function addGuestDetails() {
     { label: 'Guest Name', value: data.customerName || '' },
     { label: 'Paid By', value: data.paymentMethod || 'Cash' },
     { label: 'Payment For', value: serviceType || '(Room, Restaurant, Room & Restaurant)' },
-    { label: 'Arrival', value: data.arrival || today.toISOString().split('T')[0]},
-    { label: 'Departure', value: data.departure || today.toISOString().split('T')[0]},
+    { label: 'Arrival', value: data.arrival.split('T')[0] || "" },
+    { label: 'Departure', value: data.departure.split('T')[0] || "" },
     { label: 'Cashier', value: data.cashierName || '' }
   ];
   
