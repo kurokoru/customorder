@@ -68,7 +68,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           <div className="hidden border-r bg-muted/40 md:block">
             <div className="flex h-full max-h-screen flex-col gap-2">
               <div className="flex h-10 items-center border-b px-4 lg:h-[40px] lg:px-6">
-                <Link href="/" className="flex items-center gap-2 font-semibold">
+                <Link href="/orders/custom/wizard" className="flex items-center gap-2 font-semibold">
                   {/* <TriangleAlert className="h-6 w-6" /> */}
                   <span className="">Pesona Indah Rooms & Restaurant</span>
                 </Link>
