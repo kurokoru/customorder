@@ -166,11 +166,11 @@ export default function CustomOrderWizard() {
           </Button>
 
           <Button
-            onClick={nextStep}
-            disabled={!canProceed() || currentStep === totalSteps}
+            onClick={currentStep === totalSteps ? () => setCurrentStep(1) : nextStep}
+            disabled={!canProceed()}
             className="flex items-center gap-2"
           >
-            Next
+            {currentStep === totalSteps ? 'New Order' : 'Next'}
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>

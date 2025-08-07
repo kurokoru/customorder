@@ -78,21 +78,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           </div>
         )}
         <div className="flex flex-col">
-          <header className="flex h-10 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[40px] lg:px-6">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="shrink-0 md:hidden"
-                >
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-              </SheetTrigger>
-              <NavbarSheet />
-            </Sheet>
-            
+          <header className="flex h-10 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[40px] lg:px-6">            
             {/* Centered Restaurant Name */}
             <div className="flex-1 flex justify-center items-center">
               <img 

@@ -248,19 +248,6 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
           Download PDF
         </Button>
       </div>
-
-      {/* Order Details for Reference */}
-      <Card className="bg-muted/50 w-full">
-        <CardHeader>
-          <CardTitle className="text-sm">Order Details</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm space-y-2">
-          <p><strong>Total Items:</strong> {data.items.length}</p>
-          <p><strong>Total Quantity:</strong> {data.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
-          <p><strong>Service Type:</strong> {ServiceOptions.find(s => s.value === data.serviceType)?.label}</p>
-          <p><strong>Processed By:</strong> {data.cashierName}</p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

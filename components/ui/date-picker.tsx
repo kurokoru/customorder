@@ -7,7 +7,7 @@ import { Calendar as CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Popover, PopoverTrigger } from "@/components/ui/popover"
 
 interface DatePickerProps {
   date?: Date
@@ -81,11 +81,11 @@ export function DatePicker({
             )}
             disabled={disabled}
           >
-            <CalendarIcon className="h-4 w-4" />
+            {/* <CalendarIcon className="h-4 w-4" /> */}
           </Button>
         </PopoverTrigger>
       </div>
-      <PopoverContent className="w-auto p-4" align="start">
+      {/* <PopoverContent className="w-auto p-4" align="start">
         <div className="space-y-2">
           <div className="text-sm font-medium">Select Date</div>
           <Input
@@ -127,7 +127,7 @@ export function DatePicker({
             Done
           </Button>
         </div>
-      </PopoverContent>
+      </PopoverContent> */}
     </Popover>
   )
 }
