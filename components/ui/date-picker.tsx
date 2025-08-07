@@ -28,12 +28,17 @@ export function DatePicker({
   const [inputValue, setInputValue] = React.useState(
     date ? format(date, "yyyy-MM-dd") : ""
   )
+  const [displayValue, setDisplayValue] = React.useState(
+    date ? format(date, "dd/MM/yyyy") : ""
+  )
 
   React.useEffect(() => {
     if (date) {
       setInputValue(format(date, "yyyy-MM-dd"))
+      setDisplayValue(format(date, "dd/MM/yyyy"))
     } else {
       setInputValue("")
+      setDisplayValue("")
     }
   }, [date])
 
@@ -45,9 +50,11 @@ export function DatePicker({
     if (value) {
       const parsedDate = new Date(value)
       if (!isNaN(parsedDate.getTime())) {
+        setDisplayValue(format(parsedDate, "dd/MM/yyyy"))
         onDateChange?.(parsedDate)
       }
     } else {
+      setDisplayValue("")
       onDateChange?.(undefined)
     }
   }
@@ -100,6 +107,7 @@ export function DatePicker({
               onClick={() => {
                 const today = new Date()
                 setInputValue(format(today, "yyyy-MM-dd"))
+                setDisplayValue(format(today, "dd/MM/yyyy"))
                 onDateChange?.(today)
               }}
               variant="outline"
@@ -111,6 +119,7 @@ export function DatePicker({
               size="sm"
               onClick={() => {
                 setInputValue("")
+                setDisplayValue("")
                 onDateChange?.(undefined)
               }}
               variant="outline"
