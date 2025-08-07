@@ -134,9 +134,20 @@ function addGuestDetails() {
   }else if (data.serviceType === 'room'){
       serviceType = 'Room';
   }
+
+  var method = data.paymentMethod || 'App';
+  if (method.toLowerCase() === 'cash') {
+    method = 'Cash';
+  } else if (method.toLowerCase() === 'transfer') {
+    method = 'Transfer Bank';
+  } else if (method.toLowerCase() === 'card') {
+    method = 'Card';
+  } else {
+    method = 'App';
+  }
   var guestData = [
     { label: 'Guest Name', value: data.customerName || '' },
-    { label: 'Paid By', value: data.paymentMethod || 'Cash' },
+    { label: 'Paid By', value: method || 'Cash' },
     { label: 'Payment For', value: serviceType || '(Room, Restaurant, Room & Restaurant)' },
     { label: 'Arrival', value: data.arrival ? formatDateToDDMMYYYY(data.arrival) : "" },
     { label: 'Departure', value: data.departure ? formatDateToDDMMYYYY(data.departure) : "" },

@@ -131,7 +131,7 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   };
 
   const addItemFromMenu = (menuItem: any) => {
-    const defaultOrderDate = data.arrival || new Date().toISOString().split('T')[0];
+    const defaultOrderDate = data.arrival || formatDateToDDMMYYYY(new Date().toISOString());
     
     // Check if item already exists in the cart
     const existingItemIndex = data.items.findIndex(item => item.reference === menuItem.ref);

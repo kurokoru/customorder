@@ -15,7 +15,7 @@ export interface WizardData {
   departure: string;
   invoice: string;
   serviceType: 'restaurant' | 'room' | 'packages' | '';
-  paymentMethod: 'App' | 'Transfer bank' | 'Card' | 'Cash' | '';
+  paymentMethod: 'app' | 'transfer' | 'card' | 'cash' | '';
   downPayment: number;
   items: {
     id: string;

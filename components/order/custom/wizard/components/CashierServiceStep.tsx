@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { User, Package, Bed, Utensils, Calendar, Smartphone, CreditCard, Banknote, ArrowRightLeft } from 'lucide-react';
 import { WizardData, ServiceOptions } from '../CustomOrderWizard';
 import { formatCurrency } from '@/lib/currency';
+import { formatDateToDDMMYYYY } from '@/lib/utils';
 import Rupiah from '@/lib/rupiah'; 
 interface CashierServiceStepProps {
   data: WizardData;
@@ -279,8 +280,8 @@ export default function CashierServiceStep({ data, onUpdate }: CashierServiceSte
           <p><strong>Invoice:</strong> {invoice}</p>
           <p><strong>Cashier:</strong> {cashierName}</p>
           <p><strong>Customer:</strong> {customerName}</p>
-          {arrivalDate && <p><strong>Arrival:</strong> {arrivalDate.toLocaleDateString()}</p>}
-          {departureDate && <p><strong>Departure:</strong> {departureDate.toLocaleDateString()}</p>}
+          {arrivalDate && <p><strong>Arrival:</strong> {formatDateToDDMMYYYY(arrivalDate.toISOString())}</p>}
+          {departureDate && <p><strong>Departure:</strong> {formatDateToDDMMYYYY(departureDate.toISOString())}</p>}
           <p><strong>Service:</strong> {serviceOptions.find(s => s.value === serviceType)?.label}</p>
           <p><strong>Payment:</strong> {paymentOptions.find(p => p.value === paymentMethod)?.label}</p>
           <p><strong>Down Payment:</strong> {formatCurrency(downPayment, '')}</p>
