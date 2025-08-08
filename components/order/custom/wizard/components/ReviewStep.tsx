@@ -198,18 +198,18 @@ export default function ReviewStep({ data, onUpdate }: ReviewStepProps) {
               <span>Subtotal:</span>
               <span>{calculateSubtotal()}</span>
             </div>
-            <div className="flex justify-between text-sm sm:text-base">
+            <Separator />
+              <div className="flex justify-between text-sm sm:text-base">
               <span>Down Payment:</span>
               <span>{new Rupiah(data.downPayment).format}</span>
             </div>
-            <Separator />
+            <div className="flex justify-between text-lg font-bold text-blue-600">
+              <span>Balance:</span>
+              <span>{calculateBalance()}</span>
+            </div>
             <div className="flex justify-between text-lg font-bold">
               <span>Total:</span>
               <span>{calculateTotal()}</span>
-            </div>
-            <div className="flex justify-between text-lg font-bold text-blue-600">
-              <span>Balance Due:</span>
-              <span>{calculateBalance()}</span>
             </div>
           </div>
         </CardContent>
