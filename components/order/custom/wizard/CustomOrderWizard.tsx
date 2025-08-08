@@ -61,6 +61,23 @@ export default function CustomOrderWizard() {
     }
   };
 
+  const resetWizard = () => {
+    // Reset all wizard data to initial state
+    setWizardData({
+      cashierName: '',
+      serviceType: '',
+      customerName: '',
+      departure: '',
+      arrival: '',
+      paymentMethod: '',
+      invoice: '',
+      downPayment: 0,
+      items: [],
+    });
+    // Go back to first step
+    setCurrentStep(1);
+  };
+
   const prevStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
@@ -166,7 +183,7 @@ export default function CustomOrderWizard() {
           </Button>
 
           <Button
-            onClick={currentStep === totalSteps ? () => setCurrentStep(1) : nextStep}
+            onClick={currentStep === totalSteps ? resetWizard : nextStep}
             disabled={!canProceed()}
             className="flex items-center gap-2"
           >
