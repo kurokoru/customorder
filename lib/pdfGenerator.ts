@@ -116,7 +116,7 @@ function addInvoiceBox() {
   doc.setFont('helvetica', 'normal');
   doc.text(invoiceNumber, pageWidth / 3 + 25, currentY + 5, { align: 'left' });
 
-  currentY += 10;
+  currentY += 15;
 }
 
 function addGuestDetails() {
