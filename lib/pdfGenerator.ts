@@ -107,7 +107,7 @@ function addInvoiceBox() {
   const incrementNumber = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
   
   // Format: {increment number}/INVOICE/{MM}/{YYYY}
-  const defaultInvoice = `     /INVOICE/   /  `;
+  const defaultInvoice = `  /INVOICE/  /`;
   const invoiceNumber = data.invoice?.trim() || defaultInvoice;
 
   // Draw box around INVOICE text
