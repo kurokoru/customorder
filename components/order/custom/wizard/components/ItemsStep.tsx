@@ -44,66 +44,66 @@ export default function ItemsStep({ data, onUpdate }: ItemsStepProps) {
   // Menu items data
   const menuItems = [
     // Rooms
-    { name: 'Pesona Room - Deluxe Family', price: 700000, ref: 'ROOM-001', image: '🏨', desc: 'Family room with sea view', category: 'room', type: 'Room' },
-    { name: 'Pesona Room - Deluxe Twin', price: 450000, ref: 'ROOM-002', image: '🛏️', desc: 'Twin bed deluxe room', category: 'room', type: 'Room' },
-    { name: 'Pesona Room - Deluxe Sea View', price: 420000, ref: 'ROOM-003', image: '🌊', desc: 'Sea view deluxe room', category: 'room', type: 'Room' },
-    { name: 'Pesona Room - Deluxe Double', price: 360000, ref: 'ROOM-004', image: '🛏️', desc: 'Double bed deluxe room', category: 'room', type: 'Room' },
-    { name: 'Pesona Room - Deluxe Single', price: 300000, ref: 'ROOM-005', image: '🛌', desc: 'Single bed deluxe room', category: 'room', type: 'Room' },
-    { name: 'Labuan Bajo Room - Deluxe Double Balcony', price: 310000, ref: 'ROOM-006', image: '🏖️', desc: 'Double room with balcony', category: 'room', type: 'Room' },
-    { name: 'Labuan Bajo Room - Deluxe Single', price: 300000, ref: 'ROOM-007', image: '🏖️', desc: 'Single room Labuan Bajo', category: 'room', type: 'Room' },
+    { name: 'Pesona Room - Deluxe Family', price: 700000, ref: '', image: '🏨', desc: 'Family room with sea view', category: 'room', type: 'Room' },
+    { name: 'Pesona Room - Deluxe Twin', price: 450000, ref: '', image: '🛏️', desc: 'Twin bed deluxe room', category: 'room', type: 'Room' },
+    { name: 'Pesona Room - Deluxe Sea View', price: 420000, ref: '', image: '🌊', desc: 'Sea view deluxe room', category: 'room', type: 'Room' },
+    { name: 'Pesona Room - Deluxe Double', price: 360000, ref: '', image: '🛏️', desc: 'Double bed deluxe room', category: 'room', type: 'Room' },
+    { name: 'Pesona Room - Deluxe Single', price: 300000, ref: '', image: '🛌', desc: 'Single bed deluxe room', category: 'room', type: 'Room' },
+    { name: 'Labuan Bajo Room - Deluxe Double Balcony', price: 310000, ref: '', image: '🏖️', desc: 'Double room with balcony', category: 'room', type: 'Room' },
+    { name: 'Labuan Bajo Room - Deluxe Single', price: 300000, ref: '', image: '🏖️', desc: 'Single room Labuan Bajo', category: 'room', type: 'Room' },
     
     // Food & Beverages - Fish/Seafood
-    { name: 'Grilled Medium Whole Snapper', price: 100000, ref: 'FOOD-001', image: '🐟', desc: 'Fresh grilled snapper', category: 'food', type: 'Seafood' },
-    { name: 'Fried Medium Whole Snapper', price: 100000, ref: 'FOOD-002', image: '🐟', desc: 'Crispy fried snapper', category: 'food', type: 'Seafood' },
-    { name: 'Fish Steak', price: 70000, ref: 'FOOD-003', image: '🐟', desc: 'Grilled fish steak', category: 'food', type: 'Seafood' },
-    { name: 'Stir Fried Fish In Chilli Sauce', price: 60000, ref: 'FOOD-004', image: '🌶️', desc: 'Spicy fish stir fry', category: 'food', type: 'Seafood' },
-    { name: 'BBQ Fish Kebab', price: 75000, ref: 'FOOD-005', image: '🍢', desc: 'Barbecued fish kebab', category: 'food', type: 'Seafood' },
-    { name: 'Fish Cordon Bleu', price: 75000, ref: 'FOOD-006', image: '🐟', desc: 'Fish cordon bleu style', category: 'food', type: 'Seafood' },
-    { name: 'Grilled Whole Snapper', price: 70000, ref: 'FOOD-007', image: '🐟', desc: 'Whole grilled snapper', category: 'food', type: 'Seafood' },
-    { name: 'Steamed Whole Snapper', price: 70000, ref: 'FOOD-008', image: '🐟', desc: 'Steamed fresh snapper', category: 'food', type: 'Seafood' },
-    { name: 'Grilled Tuna', price: 65000, ref: 'FOOD-009', image: '🐟', desc: 'Fresh grilled tuna', category: 'food', type: 'Seafood' },
-    { name: 'Sweet Sour Prawn', price: 80000, ref: 'FOOD-010', image: '🦐', desc: 'Sweet & sour prawns', category: 'food', type: 'Seafood' },
-    { name: 'Garlic Prawn', price: 80000, ref: 'FOOD-011', image: '🦐', desc: 'Garlic butter prawns', category: 'food', type: 'Seafood' },
-    { name: 'Squid Kebab', price: 80000, ref: 'FOOD-012', image: '🦑', desc: 'Grilled squid kebab', category: 'food', type: 'Seafood' },
-    { name: 'Squid Garlic', price: 70000, ref: 'FOOD-013', image: '🦑', desc: 'Garlic squid stir fry', category: 'food', type: 'Seafood' },
-    { name: 'Squid Stir Fried', price: 70000, ref: 'FOOD-014', image: '🦑', desc: 'Stir fried squid', category: 'food', type: 'Seafood' },
+    { name: 'Grilled Medium Whole Snapper', price: 100000, ref: '', image: '🐟', desc: 'Fresh grilled snapper', category: 'food', type: 'Seafood' },
+    { name: 'Fried Medium Whole Snapper', price: 100000, ref: '', image: '🐟', desc: 'Crispy fried snapper', category: 'food', type: 'Seafood' },
+    { name: 'Fish Steak', price: 70000, ref: '', image: '🐟', desc: 'Grilled fish steak', category: 'food', type: 'Seafood' },
+    { name: 'Stir Fried Fish In Chilli Sauce', price: 60000, ref: '', image: '🌶️', desc: 'Spicy fish stir fry', category: 'food', type: 'Seafood' },
+    { name: 'BBQ Fish Kebab', price: 75000, ref: '', image: '🍢', desc: 'Barbecued fish kebab', category: 'food', type: 'Seafood' },
+    { name: 'Fish Cordon Bleu', price: 75000, ref: '', image: '🐟', desc: 'Fish cordon bleu style', category: 'food', type: 'Seafood' },
+    { name: 'Grilled Whole Snapper', price: 70000, ref: '', image: '🐟', desc: 'Whole grilled snapper', category: 'food', type: 'Seafood' },
+    { name: 'Steamed Whole Snapper', price: 70000, ref: '', image: '🐟', desc: 'Steamed fresh snapper', category: 'food', type: 'Seafood' },
+    { name: 'Grilled Tuna', price: 65000, ref: '', image: '🐟', desc: 'Fresh grilled tuna', category: 'food', type: 'Seafood' },
+    { name: 'Sweet Sour Prawn', price: 80000, ref: '', image: '🦐', desc: 'Sweet & sour prawns', category: 'food', type: 'Seafood' },
+    { name: 'Garlic Prawn', price: 80000, ref: '', image: '🦐', desc: 'Garlic butter prawns', category: 'food', type: 'Seafood' },
+    { name: 'Squid Kebab', price: 80000, ref: '', image: '🦑', desc: 'Grilled squid kebab', category: 'food', type: 'Seafood' },
+    { name: 'Squid Garlic', price: 70000, ref: '', image: '🦑', desc: 'Garlic squid stir fry', category: 'food', type: 'Seafood' },
+    { name: 'Squid Stir Fried', price: 70000, ref: '', image: '🦑', desc: 'Stir fried squid', category: 'food', type: 'Seafood' },
     
     // Indonesian Fish Dishes
-    { name: 'Ikan Bakar', price: 100000, ref: 'FOOD-015', image: '🔥', desc: 'Indonesian grilled fish', category: 'food', type: 'Indonesian' },
-    { name: 'Ikan Goreng', price: 100000, ref: 'FOOD-016', image: '🍤', desc: 'Indonesian fried fish', category: 'food', type: 'Indonesian' },
-    { name: 'Ikan Bumbu Bali', price: 60000, ref: 'FOOD-017', image: '🌶️', desc: 'Balinese spiced fish', category: 'food', type: 'Indonesian' },
-    { name: 'Pepes Be Pasih', price: 70000, ref: 'FOOD-018', image: '🐟', desc: 'Steamed fish in banana leaf', category: 'food', type: 'Indonesian' },
-    { name: 'Pepes Cumi/Udang', price: 70000, ref: 'FOOD-019', image: '🦑', desc: 'Steamed squid/prawn in banana leaf', category: 'food', type: 'Indonesian' },
+    { name: 'Ikan Bakar', price: 100000, ref: '', image: '🔥', desc: 'Indonesian grilled fish', category: 'food', type: 'Indonesian' },
+    { name: 'Ikan Goreng', price: 100000, ref: '', image: '🍤', desc: 'Indonesian fried fish', category: 'food', type: 'Indonesian' },
+    { name: 'Ikan Bumbu Bali', price: 60000, ref: '', image: '🌶️', desc: 'Balinese spiced fish', category: 'food', type: 'Indonesian' },
+    { name: 'Pepes Be Pasih', price: 70000, ref: '', image: '🐟', desc: 'Steamed fish in banana leaf', category: 'food', type: 'Indonesian' },
+    { name: 'Pepes Cumi/Udang', price: 70000, ref: '', image: '🦑', desc: 'Steamed squid/prawn in banana leaf', category: 'food', type: 'Indonesian' },
     
     // Chicken Dishes
-    { name: 'Ayam Bakar', price: 65000, ref: 'FOOD-020', image: '🍗', desc: 'Indonesian grilled chicken', category: 'chicken', type: 'Chicken' },
-    { name: 'Chicken Cordon Bleu', price: 70000, ref: 'FOOD-021', image: '🍗', desc: 'Chicken cordon bleu style', category: 'chicken', type: 'Chicken' },
-    { name: 'Chicken Steak Garlic Butter', price: 70000, ref: 'FOOD-022', image: '🍗', desc: 'Chicken steak with garlic butter', category: 'chicken', type: 'Chicken' },
-    { name: 'Stir Fried Chicken In Chilli Sauce', price: 70000, ref: 'FOOD-023', image: '🌶️', desc: 'Spicy chicken stir fry', category: 'chicken', type: 'Chicken' },
-    { name: 'BBQ Chicken Kebab', price: 70000, ref: 'FOOD-024', image: '🍢', desc: 'Barbecued chicken kebab', category: 'chicken', type: 'Chicken' },
+    { name: 'Ayam Bakar', price: 65000, ref: '', image: '🍗', desc: 'Indonesian grilled chicken', category: 'chicken', type: 'Chicken' },
+    { name: 'Chicken Cordon Bleu', price: 70000, ref: '', image: '🍗', desc: 'Chicken cordon bleu style', category: 'chicken', type: 'Chicken' },
+    { name: 'Chicken Steak Garlic Butter', price: 70000, ref: '', image: '🍗', desc: 'Chicken steak with garlic butter', category: 'chicken', type: 'Chicken' },
+    { name: 'Stir Fried Chicken In Chilli Sauce', price: 70000, ref: '', image: '🌶️', desc: 'Spicy chicken stir fry', category: 'chicken', type: 'Chicken' },
+    { name: 'BBQ Chicken Kebab', price: 70000, ref: '', image: '🍢', desc: 'Barbecued chicken kebab', category: 'chicken', type: 'Chicken' },
     
     // Beef Dishes
-    { name: 'Tenderloin Steak', price: 80000, ref: 'FOOD-025', image: '🥩', desc: 'Premium beef tenderloin', category: 'food', type: 'Beef' },
-    { name: 'Mushroom Beef Steak', price: 80000, ref: 'FOOD-026', image: '🥩', desc: 'Beef steak with mushroom sauce', category: 'food', type: 'Beef' },
-    { name: 'BBQ Beef Kebab', price: 80000, ref: 'FOOD-027', image: '🍢', desc: 'Barbecued beef kebab', category: 'food', type: 'Beef' },
-    { name: 'Beef Cordon Bleu', price: 80000, ref: 'FOOD-028', image: '🥩', desc: 'Beef cordon bleu style', category: 'food', type: 'Beef' },
+    { name: 'Tenderloin Steak', price: 80000, ref: '', image: '🥩', desc: 'Premium beef tenderloin', category: 'food', type: 'Beef' },
+    { name: 'Mushroom Beef Steak', price: 80000, ref: '', image: '🥩', desc: 'Beef steak with mushroom sauce', category: 'food', type: 'Beef' },
+    { name: 'BBQ Beef Kebab', price: 80000, ref: '', image: '🍢', desc: 'Barbecued beef kebab', category: 'food', type: 'Beef' },
+    { name: 'Beef Cordon Bleu', price: 80000, ref: '', image: '🥩', desc: 'Beef cordon bleu style', category: 'food', type: 'Beef' },
     
     // Rice & Others
-    { name: 'Nasi Goreng', price: 50000, ref: 'FOOD-029', image: '🍛', desc: 'Indonesian fried rice', category: 'food', type: 'Rice' },
-    { name: 'Breakfast Package', price: 50000, ref: 'SVC-001', image: '🍳', desc: 'Complete breakfast package', category: 'service', type: 'Breakfast' },
+    { name: 'Nasi Goreng', price: 50000, ref: '', image: '🍛', desc: 'Indonesian fried rice', category: 'food', type: 'Rice' },
+    { name: 'Breakfast Package', price: 50000, ref: '', image: '🍳', desc: 'Complete breakfast package', category: 'service', type: 'Breakfast' },
     
     // Beverages
-    { name: 'Large Beer', price: 50000, ref: 'BEV-001', image: '🍺', desc: 'Large bottle beer', category: 'beverage', type: 'Beer' },
-    { name: 'Medium Beer', price: 35000, ref: 'BEV-002', image: '🍺', desc: 'Medium bottle beer', category: 'beverage', type: 'Beer' },
-    { name: 'Canned Beer', price: 30000, ref: 'BEV-003', image: '🥫', desc: 'Canned beer', category: 'beverage', type: 'Beer' },
-    { name: 'Radler', price: 35000, ref: 'BEV-004', image: '🍺', desc: 'Beer with lemon', category: 'beverage', type: 'Beer' },
-    { name: 'Fruit Juice', price: 30000, ref: 'BEV-005', image: '🧃', desc: 'Fresh fruit juice', category: 'beverage', type: 'Juice' },
-    { name: 'Watermelon Juice', price: 35000, ref: 'BEV-006', image: '🍉', desc: 'Fresh watermelon juice', category: 'beverage', type: 'Juice' },
-    { name: 'Milkshake', price: 40000, ref: 'BEV-007', image: '🥤', desc: 'Creamy milkshake', category: 'beverage', type: 'Milkshake' },
-    { name: 'Mix Milkshake/Juice', price: 45000, ref: 'BEV-008', image: '🥤', desc: 'Mixed milkshake with fruit', category: 'beverage', type: 'Milkshake' },
+    { name: 'Large Beer', price: 50000, ref: '', image: '🍺', desc: 'Large bottle beer', category: 'beverage', type: 'Beer' },
+    { name: 'Medium Beer', price: 35000, ref: '', image: '🍺', desc: 'Medium bottle beer', category: 'beverage', type: 'Beer' },
+    { name: 'Canned Beer', price: 30000, ref: '', image: '🥫', desc: 'Canned beer', category: 'beverage', type: 'Beer' },
+    { name: 'Radler', price: 35000, ref: '', image: '🍺', desc: 'Beer with lemon', category: 'beverage', type: 'Beer' },
+    { name: 'Fruit Juice', price: 30000, ref: '', image: '🧃', desc: 'Fresh fruit juice', category: 'beverage', type: 'Juice' },
+    { name: 'Watermelon Juice', price: 35000, ref: '', image: '🍉', desc: 'Fresh watermelon juice', category: 'beverage', type: 'Juice' },
+    { name: 'Milkshake', price: 40000, ref: '', image: '🥤', desc: 'Creamy milkshake', category: 'beverage', type: 'Milkshake' },
+    { name: 'Mix Milkshake/Juice', price: 45000, ref: '', image: '🥤', desc: 'Mixed milkshake with fruit', category: 'beverage', type: 'Milkshake' },
     
     // Desserts
-    { name: 'Dessert', price: 40000, ref: 'DES-001', image: '🍰', desc: 'Daily dessert selection', category: 'dessert', type: 'Dessert' }
+    { name: 'Dessert', price: 40000, ref: '', image: '🍰', desc: 'Daily dessert selection', category: 'dessert', type: 'Dessert' }
   ];
 
   const validateItem = (item: NewItem): boolean => {

@@ -81,7 +81,7 @@ export const generatePDF = ({ data, calculateTotal, calculateBalance }: PDFGener
   // Company address and contact
   var companyInfo = [
     'Phone : +62 821-4525-0266',
-    'Email : hallpesona@gmail.com'
+    'Email : balipesona@ymail.com'
   ];
   
   for (var i = 0; i < companyInfo.length; i++) {
@@ -89,7 +89,7 @@ export const generatePDF = ({ data, calculateTotal, calculateBalance }: PDFGener
     currentY += 5;
   }
   
-  currentY += 5; // Extra space after header
+  currentY += 10; // Extra space after header
 }
 
 // Helper function to add invoice box
@@ -107,7 +107,7 @@ function addInvoiceBox() {
   const incrementNumber = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
   
   // Format: {increment number}/INVOICE/{MM}/{YYYY}
-  const defaultInvoice = `${incrementNumber}/INVOICE/${month}/${year}`;
+  const defaultInvoice = `     /INVOICE/   /  `;
   const invoiceNumber = data.invoice?.trim() || defaultInvoice;
 
   // Draw box around INVOICE text
